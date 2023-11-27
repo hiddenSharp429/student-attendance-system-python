@@ -1,6 +1,6 @@
 """
 @coding : utf-8
-@File   : database_manager.py
+@File   : student_information.py
 @Author : yuxiang Zeng
 @Date   : 2023/11/27
 @Desc   :
@@ -22,7 +22,7 @@ class Student(Base):
     1.  declarative_base 来定义模型类
     2. Column 来映射到表的列
     '''
-    __tablename__ = 'student'
+    __tablename__ = 'student_information'
 
     stu_id = Column(String(length=20), primary_key=True)
     stu_name = Column(String)
@@ -37,9 +37,10 @@ class Student(Base):
     absen_times = Column(Integer)
     leave_times = Column(Integer)
     truany_times = Column(Integer)
+    password = Column(String)
 
     def __init__(self, stu_id, stu_name, sex, age, institute, major, class_no, dormitory, phone, email, absen_times,
-                 leave_times, truany_times):
+                 leave_times, truany_times, password):
         '''
         需要传入的参数
         :param stu_id: 学生的jd
@@ -55,6 +56,7 @@ class Student(Base):
         :param absen_times:学生缺勤的次数
         :param leave_times:学生请假的次数
         :param truany_times:学生旷课的次数
+        :param password:学生账号的密码
         '''
         self.stu_id = stu_id
         self.stu_name = stu_name
@@ -69,18 +71,19 @@ class Student(Base):
         self.absen_times = absen_times
         self.leave_times = leave_times
         self.truany_times = truany_times
+        self.password = password
 
     def __str__(self):
         return f"Student(stu_id={self.stu_id}, stu_name={self.stu_name}, sex={self.sex}, age={self.age}, " \
                f"institute={self.institute}, major={self.major}, class_no={self.class_no}, dormitory={self.dormitory}, " \
                f"phone={self.phone}, email={self.email}, absen_times={self.absen_times}, " \
-               f"leave_times={self.leave_times}, truany_times={self.truany_times})"
+               f"leave_times={self.leave_times}, truany_times={self.truany_times}, password={self.password})"
 
 
 class StudentManager:
     def __init__(self, table_name):
         '''
-        创建一个StudentManager对象时需要传入表的名称（student），用于连接数据库中的相关表
+        创建一个StudentManager对象时需要传入表的名称（student_information），用于连接数据库中的相关表
         :param table_name:
         '''
         self.table_name = table_name
@@ -134,7 +137,7 @@ class StudentManager:
     def search_student(self, student_id):
         '''
         查询某个学生的记录，以stu_id为查询条件
-        :param student_id: 需要查询的
+        :param student_id: 需要查询的学生id
         :return: 某个学生记录的全部信息
         '''
         Session = sessionmaker(bind=self.db_manager.engine)
@@ -167,11 +170,11 @@ class StudentManager:
 if __name__ == '__main__':
     student_manager = StudentManager(table_name='student')
 
-    student1 = Student(stu_id="21xxxx", stu_name="张三", sex="男", age=20, institute="工学院",
-                       major="计算科学", class_no="1", dormitory="D101", phone="1234567890",
-                       email="alice@example.com", absen_times=3, leave_times=1, truany_times=2)
+    student1 = Student(stu_id="2021611012", stu_name="李四", sex="男", age=20, institute="工学院",
+                       major="计算科学", class_no="1", dormitory="D501", phone="1234567890",
+                       email="1231@example.com", absen_times=3, leave_times=1, truany_times=2, password="123456")
 
-    #student_manager.add_student(student1)
+    student_manager.add_student(student1)
 
     #student_manager.view_all_students()
 
