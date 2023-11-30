@@ -3,13 +3,13 @@
 @File   : teacher_information.py
 @Author : yuxiang Zeng
 @Date   : 2023/11/27
-@Desc   :
+@Desc   : 老师信息表
 @Version: version_1
 @Last_editor: zixian Zhu
 """
 
 from utils.database_manager import DatabaseManager
-from sqlalchemy import Column, String, Integer, create_engine
+from sqlalchemy import Column, String, Integer, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -156,6 +156,18 @@ class TeacherManager:
         else:
             print(f"teacher with ID {teacher_id} not found in the database.")
 
+    def execute_sql_query(self, sql_query):
+        '''
+        执行任意sql语句
+        :param sql_query: 需要在teacher_information表中执行的sql语句
+        :return: 查询的结果
+        '''
+        Session = sessionmaker(bind=self.db_manager.engine)
+        session = Session()
+
+        result = session.execute(text(sql_query))
+        return result.fetchall()
+
 
 if __name__ == '__main__':
     teacher_manager = TeacherManager(table_name='teacher_information')
@@ -164,9 +176,9 @@ if __name__ == '__main__':
                        major="计算机科学与计算", email="8@example.com",
                        phone_number="12345678908", office="OfficeF", home="HomeF", password="123456")
 
-    #teacher_manager.add_teacher(teacher1)
+    # teacher_manager.add_teacher(teacher1)
 
-    #teacher_manager.view_all_teachers()
+    # teacher_manager.view_all_teachers()
 
     # teacher_manager.delete_teacher(teacher_id="21xxxx")
 

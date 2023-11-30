@@ -3,13 +3,13 @@
 @File   : student_information.py
 @Author : yuxiang Zeng
 @Date   : 2023/11/27
-@Desc   :
+@Desc   : 学生信息表
 @Version: version_1
 @Last_editor: zixian Zhu
 """
 
 from utils.database_manager import DatabaseManager
-from sqlalchemy import Column, String, Integer, create_engine
+from sqlalchemy import Column, String, Integer, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -166,6 +166,17 @@ class StudentManager:
         else:
             print(f"Student with ID {student_id} not found in the database.")
 
+    def execute_sql_query(self, sql_query):
+        '''
+        执行任意sql语句
+        :param sql_query: 需要在student_information表中执行的sql语句
+        :return: 查询的结果
+        '''
+        Session = sessionmaker(bind=self.db_manager.engine)
+        session = Session()
+
+        result = session.execute(text(sql_query))
+        return result.fetchall()
 
 if __name__ == '__main__':
     student_manager = StudentManager(table_name='student')

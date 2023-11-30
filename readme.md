@@ -34,3 +34,23 @@
 ### 修复
 无
 
+## 版本 0.3.0 (2023.11.30晚上)
+```angular2html
+@Author : zixian Zhu
+@Date   : 2023/11/30
+@Submit_branch: version_1
+```
+### 新特性
+- [功能1]：新增course_selection_table.py文件，该文件 
+包含CourseSelectionRecord、CourseSelectionManager这两个类，用于学生选课表course_selection
+中的查询操作
+- [功能2]：新增了course.py文件，该文件包含Course、CourseManager两个类，用于课程表的中的相关操作
+- [功能3]：每个表的Manager类都新增了对外提供的查询函数`execute_sql_query(self, sql_query)`
+可以查询任意内容。
+### 改进
+- [改进1]：修改了course的表名称, course->course_seleciton
+- [改进2]：新增了课程表course，用于记录课程的相关信息
+
+### 修复
+无
+
