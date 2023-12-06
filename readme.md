@@ -54,3 +54,23 @@
 ### 修复
 无
 
+## 版本 0.4.0 (2023.12.6晚上)
+
+```angular2html
+@Author : zixian Zhu
+@Date   : 2023/12/6
+@Submit_branch: version_1
+```
+
+### 新特性
+
+- [功能1]：删除原来的main.py，新增一个app.py，app.py中提供了一个简单的后端调用接口，用于获取所有学生信息。
+- [功能2]：docs文件夹新增一个api调用的模板文档(api_template.md)和一个api交流文档(api.md)
+
+### 改进
+
+无
+
+### 修复
+
+无

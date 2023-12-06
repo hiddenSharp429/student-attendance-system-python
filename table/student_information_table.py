@@ -118,6 +118,8 @@ class StudentManager:
         for student in all_students:
             print(student)
 
+        return all_students
+
     def delete_student(self, student_id):
         '''
         删除student表中stu_id为student_id的记录
@@ -185,7 +187,7 @@ if __name__ == '__main__':
                        major="计算科学", class_no="1", dormitory="D501", phone="1234567890",
                        email="1231@example.com", absen_times=3, leave_times=1, truany_times=2, password="123456")
 
-    student_manager.add_student(student1)
+    #student_manager.add_student(student1)
 
     #student_manager.view_all_students()
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="ec0d817d-7e7c-4bfb-a04f-a24dc21a705d" name="2core_4G_tencent_cloud_server" url="http://43.136.80.11 ">
+        <fileTransfer rootFolder="/home/ubuntu" accessType="SFTP" host="43.136.80.11" port="22" sshConfigId="a423b431-a551-428d-8cc3-91237e018394" sshConfig="ubuntu@43.136.80.11:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" isUseSudo="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
