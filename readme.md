@@ -74,3 +74,24 @@
 ### 修复
 
 无
+
+## 版本 0.5.0 (2023.12.7)
+
+```angular2html
+@Author : zixian Zhu
+@Date   : 2023/12/7
+@Submit_branch: version_1
+```
+
+### 新特性
+
+- [功能1]：新增了attendance_information_tabel.py文件，该文件有AttendanceRecord和AttendanceManager两个类。
+AttendanceManager中有添加考勤记录的方法、查询某个考勤记录学生是否签到的方法、查看该表的所有数据的方法。
+
+### 改进
+
+- [改进1]：修改了todo.md文件
+
+### 修复
+
+无
