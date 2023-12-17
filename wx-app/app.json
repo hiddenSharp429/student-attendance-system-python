@@ -1,0 +1,68 @@
+{
+  "pages": [
+    "pages/login/index",
+    "pages/qjshenhe/qjshenhe",
+    "pages/kechengbiao/kechengbiao",
+       "pages/qingjia/qingjia",
+       
+ 
+       "pages/index/index",
+      
+    
+      "pages/kqtongji/kqtongji",
+      
+      "pages/fabukq/fabukq",
+      "pages/logs/logs",
+      "pages/list/list",  
+      "pages/qiandao/qiandao",
+      "pages/person/person",
+      "pages/stuperson/stuperson"
+     
+    
+  ],
+  "tabBar": {
+       "color": "#3B5D67",
+       "selectedColor": "#3B5D67",
+       "backgroundColor": "#FFFFFF",
+       "borderStyle": "black",
+       "position": "bottom",
+       "list": [
+         {
+           "pagePath": "pages/kechengbiao/kechengbiao",
+           "text": "课程表",
+           "iconPath": "./pages/img/member.png",
+           "selectedIconPath": "./pages/img/member.png"
+         },
+         {
+           "pagePath": "pages/qiandao/qiandao",
+           "text": "签到",
+           "iconPath": "./pages/img/member.png",
+           "selectedIconPath": "./pages/img/member.png"
+         },
+         {
+          "pagePath": "pages/qingjia/qingjia",
+          "text": "请假",
+          "iconPath": "./pages/img/member.png",
+          "selectedIconPath": "./pages/img/member.png"
+        },
+         {
+           "pagePath": "pages/person/person",
+           "text": "个人中心",
+           "iconPath": "./pages/img/member.png",
+           "selectedIconPath": "./pages/img/member.png"
+         }
+       ]
+     },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#0282f5",
+    "navigationBarTitleText": "小草考勤",
+    "navigationBarTextStyle": "white"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "lazyCodeLoading": "requiredComponents"
+}

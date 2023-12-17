@@ -1,0 +1,37 @@
+<view class="container">
+  <view class="form-group">
+    <view class="label-container">
+      <text>考勤标题：</text>
+    </view>
+    <input bindinput="inputTitle" placeholder="请输入考勤标题"></input>
+  </view>
+
+  <view class="form-group">
+    <view class="label-container">
+      <text>考勤日期：</text>
+    </view>
+    <picker mode="date" value="{{date}}" start="2015-09-01" end="2030-09-01" bindchange="selectDate">
+      <view class="picker">当前选择：{{ date }}</view>
+    </picker>
+  </view>
+
+  <view class="form-group">
+    <view class="label-container">
+      <text>考勤开始时间：</text>
+    </view>
+    <picker mode="time" value="{{startTime}}" start="00:00" end="23:59" bindchange="selectStartTime">
+      <view class="picker">当前选择：{{ startTime }}</view>
+    </picker>
+  </view>
+
+  <view class="form-group">
+    <view class="label-container">
+      <text>考勤结束时间：</text>
+    </view>
+    <picker mode="time" value="{{endTime}}" start="00:00" end="23:59" bindchange="selectEndTime">
+      <view>当前选择：{{ endTime }}</view>
+    </picker>
+  </view>
+
+  <button bindtap="submitAttendance">发布</button>
+</view>

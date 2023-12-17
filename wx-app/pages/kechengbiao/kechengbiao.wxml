@@ -1,0 +1,162 @@
+<view style="margin-top:50px; font-size: large; font-weight: 1000; text-align:center;">课程表</view>
+
+
+<scroll-view class="table" scroll-x="true">
+    <!-- 表头(即第一行) -->
+    <view class="tr">
+        <view class="th_1">课程节次</view>
+        <view class="th_2">周一</view>
+        <view class="th_3">周二</view>
+        <view class="th_4">周三</view>
+        <view class="th_5">周四</view>
+        <view class="th_6">周五</view>
+        <view class="th_7">周六</view>
+        <view class="th_8">周日</view>
+    </view>
+
+    <!-- 表格第二行 -->
+    <view class="tr">
+        <view class="td_1">1</view>
+        <view class="td_2">数学</view>
+        <view class="td_3">物理</view>
+        <view class="td_4">英语</view>
+        <view class="td_5"></view>
+        <view class="td_6">算法</view>
+        <view class="td_7"></view>
+        <view class="td_8"></view>
+    </view>
+
+    <!-- 表格第三行 -->
+    <view class="tr">
+        <view class="td_1">2</view>
+        <view class="td_2">数学</view>
+        <view class="td_3">物理</view>
+        <view class="td_4">英语</view>
+        <view class="td_5"></view>
+        <view class="td_6">算法</view>
+        <view class="td_7"></view>
+        <view class="td_8"></view>
+    </view>
+    
+    <!-- 表格第四行 -->
+    <view class="tr">
+        <view class="td_1">3</view>
+        <view class="td_2"></view>
+        <view class="td_3"></view>
+        <view class="td_4">线代</view>
+        <view class="td_5">思政</view>
+        <view class="td_6">英语</view>
+        <view class="td_7"></view>
+        <view class="td_8"></view>
+    </view>
+
+     <!-- 表格第五行 -->
+     <view class="tr">
+        <view class="td_1">4</view>
+        <view class="td_2"></view>
+        <view class="td_3"></view>
+        <view class="td_4">线代</view>
+        <view class="td_5">思政</view>
+        <view class="td_6">英语</view>
+        <view class="td_7"></view>
+        <view class="td_8"></view>
+    </view>
+
+     <!-- 表格第六行 -->
+     <view class="tr">
+        <view class="td_1">5</view>
+        <view class="td_2"></view>
+        <view class="td_3"></view>
+        <view class="td_4"></view>
+        <view class="td_5"></view>
+        <view class="td_6"></view>
+        <view class="td_7"></view>
+        <view class="td_8"></view>
+    </view>
+
+     <!-- 表格第七行 -->
+     <view class="tr">
+        <view class="td_1">6</view>
+        <view class="td_2">体育</view>
+        <view class="td_3"></view>
+        <view class="td_4"></view>
+        <view class="td_5"></view>
+        <view class="td_6"></view>
+        <view class="td_7"></view>
+        <view class="td_8"></view>
+    </view>
+
+     <!-- 表格第八行 -->
+     <view class="tr">
+        <view class="td_1">7</view>
+        <view class="td_2">体育</view>
+        <view class="td_3"></view>
+        <view class="td_4"></view>
+        <view class="td_5"></view>
+        <view class="td_6"></view>
+        <view class="td_7"></view>
+        <view class="td_8"></view>
+    </view>
+  
+     <!-- 表格第九行 -->
+     <view class="tr">
+        <view class="td_1">8</view>
+        <view class="td_2"></view>
+        <view class="td_3">C语言</view>
+        <view class="td_4"></view>
+        <view class="td_5">数学</view>
+        <view class="td_6">算法</view>
+        <view class="td_7"></view>
+        <view class="td_8"></view>
+    </view>
+
+     <!-- 表格第十行 -->
+     <view class="tr">
+        <view class="td_1">9</view>
+        <view class="td_2"></view>
+        <view class="td_3">C语言</view>
+        <view class="td_4"></view>
+        <view class="td_5">数学</view>
+        <view class="td_6">算法</view>
+        <view class="td_7"></view>
+        <view class="td_8"></view>
+    </view>
+
+     <!-- 表格第十一行 -->
+     <view class="tr">
+        <view class="td_1">10</view>
+        <view class="td_2"></view>
+        <view class="td_3"></view>
+        <view class="td_4"></view>
+        <view class="td_5"></view>
+        <view class="td_6"></view>
+        <view class="td_7"></view>
+        <view class="td_8"></view>
+    </view>
+
+     <!-- 表格第十二行 -->
+     <view class="tr">
+        <view class="td_1">11</view>
+        <view class="td_2"></view>
+        <view class="td_3"></view>
+        <view class="td_4"></view>
+        <view class="td_5"></view>
+        <view class="td_6"></view>
+        <view class="td_7"></view>
+        <view class="td_8"></view>
+    </view>
+
+     <!-- 表格第十三行 -->
+     <view class="tr">
+        <view class="td_1">12</view>
+        <view class="td_2"></view>
+        <view class="td_3"></view>
+        <view class="td_4"></view>
+        <view class="td_5"></view>
+        <view class="td_6"></view>
+        <view class="td_7"></view>
+        <view class="td_8"></view>
+    </view>
+</scroll-view>
+
+

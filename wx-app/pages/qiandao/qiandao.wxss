@@ -1,0 +1,16 @@
+.context{
+       width: 80%;
+       height: 50%;
+       background-color: antiquewhite;
+       padding: 10rpx;
+       margin-top: 45%;
+       border-radius: 20px 20px 20px 20px;
+       margin: 50rpx;
+     }
+    
+     .fighting text{
+            margin-left: 45%;
+       font-size: 55rpx;
+       font-weight: 700;
+       color: red;
+     }
