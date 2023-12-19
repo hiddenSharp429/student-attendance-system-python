@@ -1,0 +1,41 @@
+<import src="../../templates/tabbar.wxml"/>
+<template is="tabBar" data="{{tabBar}}"/> 
+<view>
+        <view class="header">
+                <image id="img" src="{{lista[i]}}" alt="User Image" class="rounded-circle" bind:tap="image_click" mode="aspectFit"/>
+        </view>
+    
+</view>
+
+<view style="margin-top: 40px;" class="container">
+    <view>
+        <view>
+            <view class="text-center">
+                <text class="text-margin">学生姓名</text>
+                <input type="text" disabled="{{isDisabled}}" style="{{inputFrame}}" placeholder="请输入姓名"/>
+            </view>
+            <view class="text-center" >
+                <text class="text-margin">所在院系</text>
+                <input type="text" disabled="{{isDisabled}}" style="{{inputFrame}}" placeholder="请输入所在院系"/>
+            </view>
+            <view class="text-center" >
+                <text class="text-margin">学生学号</text>
+                <input type="text" disabled="{{isDisabled}}" style="{{inputFrame}}" placeholder="请输入学生学号"/>
+            </view>
+            <view class="text-center" >
+                <text class="text-margin">所在年级</text>
+                <input type="text" disabled="{{isDisabled}}" style="{{inputFrame}}" placeholder="请输入年级"/>
+            </view>
+            <view class="text-center" >
+                <text class="text-margin">联系电话</text>
+                <input type="text" disabled="{{isDisabled}}" style="{{inputFrame}}" placeholder="请输入联系电话"/>
+            </view>
+        </view>
+    </view>
+</view>
+
+<view style="margin-top: 20px;">
+    <button class="btn" bindtap="changeState">
+        {{text}}
+    </button>
+</view>

@@ -1,0 +1,52 @@
+<import src="../../templates/tabbar.wxml"/>
+<template is="tabBar" data="{{tabBar}}"/> 
+<view class="container">
+  <!-- <image src="/image/backArrow.png" mode="" class="backArrow" bindtap="back"/> -->
+  <view class="formHead">
+    <text class="headTitle">请假条</text>
+  </view>
+  <view class="formBody">
+    <form bindsubmit="submitForm">
+      <view class="form-group">
+        <text class="formLabel">姓名：</text>
+        <input type="text" name="Sname" class="formInput" placeholder="请输入学生姓名" value="{{Sname}}"/>
+      </view>
+      <view class="form-group">
+        <text class="formLabel">学号：</text>
+        <input type="number" name="Sno" class="formInput" placeholder="请输入学号" value="{{Sno}}"/>
+      </view>
+      <view class="form-group">
+        <text class="formLabel">学历：</text>
+        <input type="text" name="Sdegree" class="formInput" placeholder="请选择学历" value="{{degree[index]}}" disabled="true">
+        </input>
+        <picker mode="selector" bindchange="pickChange" value="{{index}}" range="{{degree}}" class="Picker">
+          <!-- <image src="/image/upArrow.png" mode="" class="upArrow"/> -->
+        </picker>
+      </view>
+      <view class="form-group">
+        <text class="formLabel">年级专业：</text>
+        <input type="text" name="Sgrade" class="formInput" placeholder="请输入年级专业" value="{{Sdegree}}"/>
+      </view>
+      <view class="form-group">
+        <text class="formLabel">联系方式：</text>
+        <input type="text" name="contactInfo" class="formInput" placeholder="请输入联系方式" value="{{contactInfo}}"/>
+      </view>
+      <view class="form-group">
+        <text class="formLabel" style="width: 280rpx;">是否请病假</text>
+        <radio-group name="STeam" class="formSelect">
+          <label class="selectItem">
+            <radio value="是" />是
+          </label>
+          <label class="selectItem">
+            <radio value="否" />否
+          </label>
+        </radio-group>
+      </view>
+      <view class="">
+        <text class="textareaTitle">请假理由：</text>
+        <textarea name="expOverview" value="{{expOverview}}" maxlength="1000"/>
+      </view>
+      <button formType="submit" class="handIt">提交</button>
+    </form>
+  </view>
+</view>

@@ -1,0 +1,30 @@
+{
+       "description": "项目配置文件",
+       "packOptions": {
+              "ignore": [],
+              "include": []
+       },
+       "setting": {
+              "urlCheck": false,
+              "es6": true,
+              "postcss": true,
+              "minified": true,
+              "newFeature": true,
+              "autoAudits": false,
+              "babelSetting": {
+                     "ignore": [],
+                     "disablePlugins": [],
+                     "outputPath": ""
+              },
+              "condition": false
+       },
+       "compileType": "miniprogram",
+       "libVersion": "3.2.4",
+       "appid": "wxd14186888725b8a1",
+       "projectname": "Record",
+       "condition": {},
+       "editorSetting": {
+              "tabIndent": "insertSpaces",
+              "tabSize": 7
+       }
+}

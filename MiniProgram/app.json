@@ -1,0 +1,38 @@
+{
+  "pages": [
+    "pages/login/index",
+    "pages/kechengbiao/kechengbiao",
+    "pages/kqtongji/kqtongji",
+    
+    "pages/qjshenhe/qjshenhe",
+    
+       "pages/qingjia/qingjia",
+       
+ 
+       "pages/index/index",
+      
+    
+      
+      
+      "pages/fabukq/fabukq",
+      "pages/logs/logs",
+      "pages/list/list",  
+      "pages/qiandao/qiandao",
+      "pages/person/person",
+      "pages/stuperson/stuperson"
+     
+    
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#0282f5",
+    "navigationBarTitleText": "小草考勤",
+    "navigationBarTextStyle": "white"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "lazyCodeLoading": "requiredComponents"
+}
