@@ -9,7 +9,7 @@
 """
 
 from utils.database_manager import DatabaseManager
-from sqlalchemy import Column, String, text
+from sqlalchemy import Column, String, text, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -39,7 +39,7 @@ class Course(Base):
 
     def __str__(self):
         return f"CourseSelectionRecord(course_id={self.course_id},teacher_id={self.teacher_id},  " \
-               f"course_name={self.course_name},teacher_name={self.teacher_name})"
+               f"course_name={self.course_name},teacher_name={self.teacher_name}"
 class CourseManager:
     def __init__(self, table_name):
         self.table_name = table_name

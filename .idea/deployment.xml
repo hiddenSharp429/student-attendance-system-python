@@ -1,25 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="ubuntu@43.136.80.11:22 password (2)" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="ubuntu@43.136.80.11:22 password" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
-      <paths name="2core_4G_tencent_cloud_server">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/PyCharm" local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
       <paths name="ubuntu@43.136.80.11:22 password">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/ubuntu/PyCharm" local="$PROJECT_DIR$" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="ubuntu@43.136.80.11:22 password (2)">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/home/ubuntu/PyCharm/软件工作大作业" local="$PROJECT_DIR$" />
+            <mapping deploy="/软件工作大作业" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>

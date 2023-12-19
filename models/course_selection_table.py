@@ -23,8 +23,9 @@ class CourseSelectionRecord(Base):
     teacher_id = Column(String)
     course_name = Column(String)
     teacher_name = Column(String)
+    semester = Column(String)
 
-    def __init__(self, course_id, student_id, teacher_id, course_name, teacher_name):
+    def __init__(self, course_id, student_id, teacher_id, course_name, teacher_name, semester):
         '''
         需要传入的参数
         :param course_id: 课程id
@@ -32,17 +33,19 @@ class CourseSelectionRecord(Base):
         :param teacher_id: 老师id
         :param course_name: 课程名称
         :param teacher_name: 老师名称
+        :param semester: 学年
         '''
         self.course_id = course_id
         self.student_id = student_id
         self.teacher_id = teacher_id
         self.course_name = course_name
         self.teacher_name = teacher_name
+        self.semester = semester
 
     def __str__(self):
         return f"CourseSelectionRecord(course_id={self.course_id}, student_id={self.student_id}, " \
                f"teacher_id={self.teacher_id}, course_name={self.course_name}," \
-               f"teacher_name={self.teacher_name})"
+               f"teacher_name={self.teacher_name}, semester={self.semester})"
 
 
 class CourseSelectionManager:
@@ -101,7 +104,7 @@ class CourseSelectionManager:
 
 
 if __name__ == '__main__':
-    course_manager = CourseSelectionManager(table_name='course_selection')
+    course_selection_manager = CourseSelectionManager(table_name='course_selection')
 
     # course_selection_record = CourseSelectionRecord(
     #     course_id="c6",
@@ -110,10 +113,10 @@ if __name__ == '__main__':
     #     course_name="ELC4",
     #     teacher_name="Banana"
     # )
-    # course_manager.add_course_selection_record(course_selection_record)
+    # course_selection_manager.add_course_selection_record(course_selection_record)
 
-    # course_manager.view_all_courses_selection_record()
+    course_selection_manager.view_all_courses_selection_record()
 
     # sql_query = "SELECT * FROM course_selection WHERE teacher_id = 'T001'"
-    # query_result = course_manager.execute_sql_query(sql_query)
+    # query_result = course_selection_manager.execute_sql_query(sql_query)
     # print(query_result)

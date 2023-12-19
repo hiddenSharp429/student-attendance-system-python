@@ -97,3 +97,25 @@ AttendanceManager中有添加考勤记录的方法、查询某个考勤记录学
 ### 修复
 
 无
+
+## 版本 0.6.0 (2023.12.19)
+
+```angular2html
+@Author : Jin Yang / zixian Zhu
+@Date   : 2023/12/19
+@Submit_branch: version_1
+```
+
+### 新特性
+
+- [功能1]：新增了clss_schedule_table.py文件，该文件有ClassScheduleRecord和ClassScheduleManager两个类。
+- [功能2]：完成了学生课程表API、学生登录API、老师登录API，具体详情看线上文档。
+
+### 改进
+
+- [改进1]：修改了course表结构，详情请看文档。
+- [改进2]：新增了class_schedule表，用于记录课程的上课时间。详情请看文档。
+- [改进3]：将models里面的course_tabel.py文件进行了拓展，使得其符合新的表结构。
+
+### 修复
+- [修复1]：修复了wx-app课程表页面展示的bug。

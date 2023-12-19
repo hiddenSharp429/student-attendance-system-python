@@ -5,18 +5,19 @@
 @Date   : 2023/12/17
 @Desc   : 有关学生服务的API接口
 @Version: version_1
-@Last_editor
+@Last_editor jin Yang
 """
 
-from flask import jsonify, request
+from flask import jsonify, request, Flask
 from flask_cors import CORS
+
+from models.class_schedule_table import ClassScheduleManager
+from models.course_selection_table import CourseSelectionManager
 from routes import student_routes
 from models.student_information_table import StudentManager
 
 CORS(student_routes)
 
-# 创建studentManager的实例
-student_manager = StudentManager(table_name='student')
 
 # 验证request请求的header是否合法
 def validate_request_headers():
@@ -28,8 +29,12 @@ def validate_request_headers():
 
     return True
 
+
+# 查看所有学生的信息
 @student_routes.route('/student_manager/view_all_students', methods=['GET'])
 def view_all_students():
+    # 创建studentManager的实例
+    student_manager = StudentManager(table_name='student')
     # 验证请求头
     if not validate_request_headers():
         return jsonify({'error': 'Invalid application identification'}), 400
@@ -65,6 +70,8 @@ def view_all_students():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
+# 查看某个学生某年某周的课程表
 @student_routes.route('/student_manager/view_student_courses', methods=['GET'])
 def view_student_courses():
     # 验证请求头
@@ -77,30 +84,123 @@ def view_student_courses():
         semester = request.args.get('semester')
         week_no = request.args.get('week_no')
 
-        # 查询学生信息
-        student = StudentManager.search_student(student_id)
-        if not student:
+        course_selection_manager = CourseSelectionManager(table_name='course_selection')
+        class_schedule_manager = ClassScheduleManager(table_name='class_schedule')
+
+        # 在course_selection表中查询该学生选择的所有课程号
+        sql_query_courses = f"SELECT course_name, course_id FROM course_selection WHERE student_id = '{student_id}' AND semester = '{semester}'"
+        course_id_tuples = course_selection_manager.execute_sql_query(sql_query_courses)
+
+        # 将列表转换为列表字典
+        course_info_list = [{'course_name': item[0], 'course_id': item[1]} for item in course_id_tuples]
+
+        if not course_info_list:
+            return jsonify({'error': 'Student not found or has no selected courses for the specified semester'}), 404
+
+        # 查询符合course_ids的class_schedule记录
+        class_schedule_records = []
+        for course_info in course_info_list:
+            course_id = course_info['course_id']
+            course_name = course_info['course_name']
+            sql_query_schedule = f"SELECT day_of_week, start_time, end_time FROM class_schedule WHERE course_id = '{course_id}' AND {week_no} BETWEEN start_week AND end_week"
+            schedule_records = class_schedule_manager.execute_sql_query(sql_query_schedule)
+
+            schedule_records_with_name = [
+                {'course_name': course_name, 'day_of_week': record[0],
+                 'start_time': record[1], 'end_time': record[2]} for record in schedule_records]
+
+            class_schedule_records.extend(schedule_records_with_name)
+
+        if class_schedule_records:
+            # Now class_schedule_records contains the relevant class schedule records
+            print(class_schedule_records)
+            return jsonify({'class_schedule_records': class_schedule_records})
+        else:
+            return jsonify({'error': 'No class schedule records found for the selected courses'}), 404
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+# 验证学生登录信息
+@student_routes.route('/student_manager/verify_stu_login', methods=['GET'])
+def verify_stu_login():
+    # 创建studentManager的实例
+    student_manager = StudentManager(table_name='student')
+    # 验证请求头
+    if not validate_request_headers():
+        return jsonify({'error': 'Invalid application identification'}), 400
+
+    try:
+        # 获取请求参数
+        student_id = request.args.get('student_id')
+        student_name = request.args.get('student_name')
+
+        # 查询学生的名字
+        stu_name_tuple = student_manager.execute_sql_query(
+            f"select stu_name from student_information where stu_id='{student_id}'")
+        if not stu_name_tuple:
             return jsonify({'error': 'Student not found'}), 404
 
-        # # 查询课程表信息
-        # courses = Schedule.query.filter_by(student_id=student.id, semester=semester, week=week).all()
-        #
-        # # 处理课程表信息
-        # course_list = []
-        # for course in courses:
-        #     course_info = {
-        #         'course_name': course.course.name,
-        #         'day_of_week': course.day_of_week,
-        #         'start_time': course.start_time,
-        #         'end_time': course.end_time,
-        #     }
-        #     course_list.append(course_info)
+        # 从元组中提取学生姓名
+        stu_name = stu_name_tuple[0][0]
+        if not stu_name:
+            return jsonify({'error': 'Student not found'}), 404
 
-        return jsonify("待开发中"), 200
+        # 返回学生名字比较的结果
+        flag = student_name == stu_name
+        if flag == True:
+            return jsonify({'msg': str(flag)}), 200
+        else:
+            return jsonify({'error': 'Student not found'}), 404
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 
 if __name__ == "__main__":
-    pass
+    # 创建测试单元的Flask 应用程序
+    app = Flask(__name__)
+
+    # 1. 测试 view_all_students 函数
+    # print("Testing view_all_students:")
+    # # 构造一个测试请求对象
+    # test_request = {'headers': {'app': 'wx-app'}}
+    # with app.test_request_context(**test_request):
+    #     response = view_all_students()
+    #     print(response)
+
+    # 2. 测试 view_student_courses 函数
+    # print("\nTesting view_student_courses:")
+    # # 提供一些测试参数
+    # test_student_id = '2021611001'
+    # test_semester = '2023'
+    # test_week_no = 5
+    # # 构造一个测试请求对象
+    # test_request_student_courses = {
+    #     'headers': {'app': 'wx-app'},
+    #     'args': {'student_id': test_student_id, 'semester': test_semester, 'week_no': test_week_no}  # 使用 args
+    # }
+    # # 将 args 作为构造请求上下文的一部分
+    # with app.test_request_context(path='/', base_url='http://localhost',
+    #                               headers=test_request_student_courses['headers'],
+    #                               query_string=test_request_student_courses['args']):  # 使用 query_string 来传递查询参数
+    #     response_student_courses = view_student_courses()
+    #     print(response_student_courses)
+
+    # 3. 测试 verify_stu_login 函数
+    print("\nTesting verify_stu_login:")
+    # 提供一些测试参数
+    test_student_id_login = '2021611001'
+    test_student_name_login = '代青草'
+    # 构造一个测试请求对象
+    test_request_verify_login = {
+        'headers': {'app': 'wx-app'},
+        'args': {'student_id': test_student_id_login, 'student_name': test_student_name_login}  # 使用 args
+    }
+    # 将 args 作为构造请求上下文的一部分
+    with app.test_request_context(path='/', base_url='http://localhost',
+                                  headers=test_request_verify_login['headers'],
+                                  query_string=test_request_verify_login['args']):  # 使用 query_string 来传递查询参数
+        response_verify_login = verify_stu_login()
+        print(response_verify_login)

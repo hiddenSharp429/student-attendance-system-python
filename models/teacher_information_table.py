@@ -188,3 +188,7 @@ if __name__ == '__main__':
     # teacher_manager.modify_teacher(teacher_id="21xxxx", new_data=new_data)
 
     # teacher_manager.view_all_teachers()
+
+    sql_query = "SELECT * FROM teacher_information WHERE teacher_id = 'T001'"
+    result = teacher_manager.execute_sql_query(sql_query)
+    print(result)
