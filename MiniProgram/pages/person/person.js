@@ -1,12 +1,22 @@
 // pages/person/person.js
 var app = getApp()
+const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0';
+
 Page({
        data: {
         isDisabled:true,  //表示页面加载完成时disabled为启用状态
         text:"修改信息",  //表示按钮初始文字为编辑
         inputFrame: "",
         lista: ["./1.jpg"],
-        i: 0
+        i: 0,
+
+        userInfo: {
+          avatarUrl: defaultAvatarUrl,
+          nickName: '',
+        },
+        hasUserInfo: false,
+        canIUseGetUserProfile: wx.canIUse('getUserProfile'),
+        canIUseNicknameComp: wx.canIUse('input.type.nickname'),
 
        },
        onLoad:function(){
@@ -43,5 +53,16 @@ Page({
             });
           }
         });
+      },
+      onChooseAvatar(e) {
+        const { avatarUrl } = e.detail
+        const { nickName } = this.data.userInfo
+        this.setData({
+          "userInfo.avatarUrl": avatarUrl,
+          hasUserInfo: nickName && avatarUrl && avatarUrl !== defaultAvatarUrl,
+        })
       }
-})
+});
+
+
+      

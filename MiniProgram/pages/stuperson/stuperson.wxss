@@ -40,4 +40,28 @@
        font-size: 13px;
        width: 40%;
    }
+
+   
+
+.avatar-wrapper {
+  padding: 0;
+  width: 70px !important;
+  border-radius: 8px;
+  margin-top: 50px;
+  /* margin-bottom: 50px; */
+  margin-left: 128px;
+ 
+}
+.avatar {
+  display: block;
+  width: 70px;
+  height: 70px;
+}
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #aaa;
+  width: 80%;
+}
      

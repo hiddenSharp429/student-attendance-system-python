@@ -1,10 +1,16 @@
 <import src="../../templates/tabbar.wxml"/>
 <template is="tabBar" data="{{tabBar}}"/> 
-<view>
-        <view class="header">
-                <image id="img" src="{{lista[i]}}" alt="User Image" class="rounded-circle" bind:tap="image_click" mode="aspectFit"/>
+<!-- <view>
+        <view class="header" >
+                <image style="width: 100px; height: 100px" id="img" src="{{lista[i]}}" alt="User Image" class="rounded-circle" bind:tap="image_click" mode="aspectFit"/>
         </view>
-    
+</view> -->
+<view class="userinfo">
+<block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
+        <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+          <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
+        </button>
+</block>
 </view>
 
 <view style="margin-top: 40px;" class="container">
