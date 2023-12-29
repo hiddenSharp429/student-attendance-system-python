@@ -119,3 +119,23 @@ AttendanceManager中有添加考勤记录的方法、查询某个考勤记录学
 
 ### 修复
 - [修复1]：修复了wx-app课程表页面展示的bug。
+
+
+## 版本 0.7.0 (2023.12.29)
+
+```angular2html
+@Author : qicao Dai/ shangming Chen / zixian Zhu
+@Date   : 2023/12/29
+@Submit_branch: version_1
+```
+
+### 新特性
+
+- [功能1]：完成了老师缺勤名单API、请假条API具体详情看线上文档。
+
+### 改进
+
+- 无
+
+### 修复
+- 无

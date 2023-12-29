@@ -112,7 +112,6 @@ def view_student_courses():
             class_schedule_records.extend(schedule_records_with_name)
 
         if class_schedule_records:
-            # Now class_schedule_records contains the relevant class schedule records
             print(class_schedule_records)
             return jsonify({'class_schedule_records': class_schedule_records})
         else:
