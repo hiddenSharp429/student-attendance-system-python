@@ -18,19 +18,19 @@
         <view>
             <view class="text-center">
                 <text class="text-margin">教师姓名</text>
-                <input type="text" disabled="{{isDisabled}}" style="{{inputFrame}}" placeholder="请输入姓名"/>
-            </view>
-            <view class="text-center" >
-                <text class="text-margin">所在院系</text>
-                <input type="text" disabled="{{isDisabled}}" style="{{inputFrame}}" placeholder="请输入所在院系"/>
+                <input type="text" disabled="true" value="{{teacher_name}}" placeholder="此处显示教师姓名"/>
             </view>
             <view class="text-center" >
                 <text class="text-margin">教师工号</text>
-                <input type="text" disabled="{{isDisabled}}" style="{{inputFrame}}" placeholder="请输入教师工号"/>
+                <input type="text" disabled="true" value="{{teacher_id}}" placeholder="此处显示教师工号"/>
+            </view>
+            <view class="text-center" >
+                <text class="text-margin">所在院系</text>
+                <input type="text" disabled="{{isDisabled}}" style="{{inputFrame}}"  placeholder="请输入教师所在院系"/>
             </view>
             <view class="text-center" >
                 <text class="text-margin">联系电话</text>
-                <input type="text" disabled="{{isDisabled}}" style="{{inputFrame}}" placeholder="请输入联系电话"/>
+                <input type="text" disabled="{{isDisabled}}" style="{{inputFrame}}" placeholder="请输入教师联系电话"/>
             </view>
         </view>
     </view>

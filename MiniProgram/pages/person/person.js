@@ -21,6 +21,19 @@ Page({
        },
        onLoad:function(){
         app.editTabBar1();    //显示自定义的底部导航
+
+        const who = app.globalData.who
+
+        if( who === '教师'){
+          const teacher_name = app.globalData.name
+          const teacher_id = app.globalData.id
+
+        this.setData({
+            teacher_name: teacher_name,
+            teacher_id: teacher_id
+        })
+        }
+
       },
        changeState(e){
         if (!this.data.isDisabled) {   //当disabled=false时

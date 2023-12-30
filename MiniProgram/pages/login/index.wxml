@@ -7,7 +7,7 @@
     <text>grass attendance system</text>
   </view>
   <form class='login' bindsubmit='login'>
-    <picker mode="selector" range="{{role}}" range-key='' value='roleIndex' bindchange="role">
+    <picker mode="selector" range="{{role}}" range-key='' value='roleIndex' bindchange="updatePerson" value="{{who}}">
       <view>
         <icon class='icon iconfont cd-yonghu'></icon>
         <input type='text' value='{{role[roleIndex]}}' placeholder='请选择角色' disabled='true'></input>
@@ -16,11 +16,11 @@
     </picker>
     <view>
       <icon class='icon iconfont cd-yonghu'></icon>
-      <input type='text' name="userName" placeholder='请输入账号'></input>
+      <input type='text' name="userName" bindinput="updateID" value="{{usrid}}" placeholder='请输入学号'></input>
     </view>
     <view>
       <icon class="icon iconfont cd-mima"></icon>
-      <input type='text' password="true" name="userPwd" placeholder='请输入姓名'></input>
+      <input type='text' name="userPwd" bindinput="updateName" value="{{usrName}}" placeholder='请输入姓名'></input>
     </view>
     <button form-type='submit'>登录</button>
   </form>

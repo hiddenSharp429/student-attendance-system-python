@@ -18,19 +18,19 @@
         <view>
             <view class="text-center">
                 <text class="text-margin">学生姓名</text>
-                <input type="text" disabled="{{isDisabled}}" style="{{inputFrame}}" placeholder="请输入姓名"/>
-            </view>
-            <view class="text-center" >
-                <text class="text-margin">所在院系</text>
-                <input type="text" disabled="{{isDisabled}}" style="{{inputFrame}}" placeholder="请输入所在院系"/>
+                <input type="text" disabled="true" placeholder="此处显示学生姓名" value="{{student_name}}"/>
             </view>
             <view class="text-center" >
                 <text class="text-margin">学生学号</text>
-                <input type="text" disabled="{{isDisabled}}" style="{{inputFrame}}" placeholder="请输入学生学号"/>
+                <input type="text" disabled="true"  placeholder="此处显示学生学号" value="{{student_id}}"/>
+            </view>
+            <view class="text-center" >
+                <text class="text-margin">所在院系</text>
+                <input type="text" disabled="true"  placeholder="此处显示学生所在院系"/>
             </view>
             <view class="text-center" >
                 <text class="text-margin">所在年级</text>
-                <input type="text" disabled="{{isDisabled}}" style="{{inputFrame}}" placeholder="请输入年级"/>
+                <input type="text" disabled="true"  placeholder="此处显示年级"/>
             </view>
             <view class="text-center" >
                 <text class="text-margin">联系电话</text>

@@ -12,13 +12,50 @@ Page({
    */
   data: {
     role: ['学生', '教师'],
-    roleIndex: 0
+    roleIndex: '',
+    who:'',
   },
-  role(e) {
+
+  updatePerson: function(event) {
+    const value = event.detail.value;
+    let who = '';
+    if (value === '0') {
+      who = '学生';
+    } else if (value === '1') {
+      who = '教师';
+    }
+
     that.setData({
-      roleIndex: e.detail.value
+      roleIndex: event.detail.value
     });
+
+    getApp().globalData.who = who;
+    // console.log(who)  //测试who输出结果
   },
+
+  updateName:function(event){
+    
+      const usrname = event.detail.value
+      this.setData({
+        usrname: usrname
+      })
+      getApp().globalData.name = usrname
+    
+  },
+
+  updateID:function(event){
+    
+    const usrid = event.detail.value
+    this.setData({
+      usrid: usrid
+    })
+    getApp().globalData.id = usrid
+    
+  },
+
+  
+
+
   /**
    * 生命周期函数--监听页面加载
    */

@@ -6,7 +6,12 @@ App({
     windowHeight: '',
     screenHeight: '',
     worknavid: '',
-    qk:'LZBBZ-PQQCF-SNQJI-JSYKC-YR3IK-BBF26'
+    qk:'LZBBZ-PQQCF-SNQJI-JSYKC-YR3IK-BBF26',
+    //个人中心显示登录人信息
+    who:'',
+    id:'',
+    name:'',
+
   },
   onLaunch: function () {
     var that = this;
