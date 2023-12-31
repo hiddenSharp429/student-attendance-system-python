@@ -3,8 +3,8 @@
 @File   : attendence_information_table.py
 @Author : zixian Zhu(hiddensharp)
 @Date   : 2023/12/7
-@Desc   : 
-@Version:
+@Desc   : 考勤信息表
+@Version: version_1
 @Last_editor
 """
 

@@ -7,12 +7,14 @@
 @Version: version_1
 @Last_editor Zixian Zhu
 """
+from datetime import datetime, timedelta
 
 from flask import jsonify, request, Flask
 from flask_cors import CORS
 
 from models.attendence_information_table import AttendanceManager
 from models.course_selection_table import CourseSelectionManager
+from models.post_attendance_table import PostAttendanceManager, PostAttendanceRecord
 from routes import teacher_routes
 from models.teacher_information_table import TeacherManager
 
@@ -102,6 +104,84 @@ def view_absentee_list():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# 老师发布考勤
+@teacher_routes.route('/teacher_manager/post_attendance', methods=['POST'])
+def post_attendance():
+    # 创建查询管理器实例
+    post_attendance_manager = PostAttendanceManager(table_name='post_attendance_information')
+
+    # 验证请求头部
+    if not validate_request_headers():
+        return jsonify({'error': 'Invalid application identification'}), 400
+
+    try:
+        # 获取请求参数：课程号和周次
+        course_name = request.form.get('course_name')
+        course_id = request.form.get('course_id')
+        course_no = request.form.get('course_no')
+        attendance_start_time = request.form.get('attendance_start_time')
+        attendance_end_time = request.form.get('attendance_end_time')
+        code = request.form.get('code')
+
+        max_index = post_attendance_manager.get_max_index()  # 获取最大索引号
+        new_index = max_index + 1  # 新记录的索引号
+
+        # 创建post_attendance记录
+        post_attendance_record = PostAttendanceRecord(
+            attendance_id=new_index,
+            course_id=course_id,
+            course_name=course_name,
+            course_no=course_no,
+            attendance_start_time=attendance_start_time,
+            attendance_end_time=attendance_end_time,
+            code=code
+        )
+
+        if post_attendance_manager.post_attendance(post_attendance_record):
+            # 返回缺勤学生名单
+            return jsonify({'msg':'发布考勤成功'}), 200
+
+
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# 查看某个学生的信息
+@teacher_routes.route('/teacher_manager/view_signal_teacher', methods=['GET'])
+def view_signal_teacher():
+    teacher_manager = TeacherManager(table_name='teacher_information')
+
+    # 验证请求头
+    if not validate_request_headers():
+        return jsonify({'error': 'Invalid application identification'}), 400
+
+    try:
+        # 获取请求参数
+        teacher_id = request.args.get('teacher_id')
+
+        # 使用StudentManger查看所有学生的信息
+        signal_teacher = teacher_manager.search_teacher(teacher_id)
+
+        # 获取没有密码的信息
+        info_without_password = {
+            "teacher_id": signal_teacher.teacher_id,
+            "teacher_name": signal_teacher.teacher_name,
+            "sex": signal_teacher.sex,
+            "age": signal_teacher.age,
+            "institute": signal_teacher.institute,
+            "major": signal_teacher.major,
+            "office": signal_teacher.office,
+            "home": signal_teacher.home,
+            "phone_number": signal_teacher.phone_number,
+            "email": signal_teacher.email,
+        }
+
+        # 返回JSON格式的学生信息
+        return jsonify({'teacher_information': info_without_password})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 if __name__ == "__main__":
     # 创建测试单元的Flask 应用程序
     app = Flask(__name__)
@@ -139,3 +219,45 @@ if __name__ == "__main__":
     #                               headers=test_view_absentee_list['headers'],
     #                               query_string=test_view_absentee_list['args']):  # 使用 query_string 来传递查询参数
     #     response_view_absentee_list = view_absentee_list()
+
+
+    # 3. 测试 post_attendance 函数
+    # print("\nTesting post_attendance:")
+    #
+    # one_day = timedelta(days=1)
+    #
+    # # 提供一些测试参数
+    # test_course_name = '操作系统原理'
+    # test_course_id = 'c1'
+    # test_course_no = 17
+    # test_attendance_start_time = datetime.now()
+    # test_attendance_end_time = datetime.now() + one_day
+    # test_code = 'c0002'
+    #
+    # # 构造一个测试请求对象
+    # test_post_attendance = {
+    #     'headers': {'app': 'wx-app'},
+    #     'args': {'course_name': test_course_name, 'course_id': test_course_id, 'course_no':test_course_no, 'attendance_start_time': test_attendance_start_time, 'attendance_end_time':test_attendance_end_time, 'code':test_code}  # 使用 args
+    # }
+    # # 将 args 作为构造请求上下文的一部分
+    # with app.test_request_context(path='/', base_url='http://localhost',
+    #                               headers=test_post_attendance['headers'],
+    #                               query_string=test_post_attendance['args']):  # 使用 query_string 来传递查询参数
+    #     response_post_attendance = post_attendance()
+
+
+    # 4. 测试 view_signal_teacher 函数
+    # print("\nTesting view_signal_teacher:")
+    # # 提供一些测试参数
+    # test_teacher_id = 'T001'
+    # # 构造一个测试请求对象
+    # test_request_view_signal_teacher = {
+    #     'headers': {'app': 'wx-app'},
+    #     'args': {'teacher_id': test_teacher_id}  # 使用 args
+    # }
+    # # 将 args 作为构造请求上下文的一部分
+    # with app.test_request_context(path='/', base_url='http://localhost',
+    #                               headers=test_request_view_signal_teacher['headers'],
+    #                               query_string=test_request_view_signal_teacher['args']):  # 使用 query_string 来传递查询参数
+    #     response_view_signal_teacher = view_signal_teacher()
+    #     print(response_view_signal_teacher)

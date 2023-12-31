@@ -135,8 +135,11 @@ class TeacherManager:
         teacher = session.query(Teacher).filter_by(teacher_id=teacher_id).first()
         if teacher:
             print(teacher)
+            return teacher
+
         else:
             print(f"teacher with ID {teacher_id} not found in the database.")
+            return None
 
     def modify_teacher(self, teacher_id, new_data):
         '''
