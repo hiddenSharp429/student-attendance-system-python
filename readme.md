@@ -119,3 +119,44 @@ AttendanceManager中有添加考勤记录的方法、查询某个考勤记录学
 
 ### 修复
 - [修复1]：修复了wx-app课程表页面展示的bug。
+
+
+## 版本 0.7.0 (2023.12.29)
+
+```angular2html
+@Author : qicao Dai/ shangming Chen / zixian Zhu
+@Date   : 2023/12/29
+@Submit_branch: version_1
+```
+
+### 新特性
+
+- [功能1]：完成了老师缺勤名单API、请假条API具体详情看线上文档。
+
+### 改进
+
+- 无
+
+### 修复
+- 无
+
+## 版本 0.8.0 (2023.12.31)
+
+```angular2html
+@Author : zixian Zhu
+@Date   : 2023/12/31
+@Submit_branch: version_1
+```
+
+### 新特性
+
+- [功能1]：完成了老师发布考勤API、老师详情信息API、学校详情信息API，具体详情看线上文档。
+- [功能2]：新建了一个post_attendance_table.py文件，该文件有PostAttendanceRecord和PostAttendanceManager两个类。用于老师发布考勤的相关操作。
+
+### 改进
+
+- [改进1]：新增了post_attendance_information表，详情请看腾讯文档。
+- [改进2]：修改了Student_information的部分方法的返回值，并且删除了三个属性列。
+
+### 修复
+- 无
