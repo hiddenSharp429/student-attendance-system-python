@@ -160,3 +160,21 @@ AttendanceManager中有添加考勤记录的方法、查询某个考勤记录学
 
 ### 修复
 - 无
+## 版本 0.9.0 (2024.1.2)
+
+```angular2html
+@Author : qicao Dai/ jin Yang
+@Date   : 2024/1/2
+@Submit_branch: version_1
+```
+
+### 新特性
+
+- [功能1]：完成了学生考勤API、获取请假审批API开发具体详情看线上文档。
+
+### 改进
+
+- 无
+
+### 修复
+- 无

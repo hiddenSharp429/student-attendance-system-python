@@ -7,14 +7,14 @@
 @Version: version_1
 @Last_editor Zixian Zhu
 """
-from datetime import datetime, timedelta
 
-from flask import jsonify, request, Flask
+from flask import jsonify, request, Flask, json
 from flask_cors import CORS
 
 from models.attendence_information_table import AttendanceManager
 from models.course_selection_table import CourseSelectionManager
 from models.post_attendance_table import PostAttendanceManager, PostAttendanceRecord
+from models.student_information_table import StudentManager
 from routes import teacher_routes
 from models.teacher_information_table import TeacherManager
 
@@ -36,7 +36,8 @@ def validate_request_headers():
 @teacher_routes.route('/teacher_manager/verify_teacher_login', methods=['GET'])
 def verify_teacher_login():
     # 创建teacherManager的实例
-    teacher_manager = TeacherManager(table_name='teacher')
+    teacher_manager = TeacherManager(table_name='teacher_information')
+
     # 验证请求头
     if not validate_request_headers():
         return jsonify({'error': 'Invalid application identification'}), 400
@@ -182,6 +183,49 @@ def view_signal_teacher():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# 老师获取学生请假审批信息
+@teacher_routes.route('/teacher_manager/get_leave_requests', methods=['GET'])
+def get_leave_requests():
+    # 创建AttendanceManager和TeacherManager实例
+    attendance_manager = AttendanceManager(table_name='attendance_information')
+    student_manager = StudentManager(table_name='student_information')
+
+    # 验证请求头
+    if not validate_request_headers():
+        return jsonify({'error': 'Invalid application identification'}), 400
+
+    try:
+        # 获取请求参数：老师工号
+        teacher_id = request.args.get('teacher_id')
+
+        # 查询状态为2且与老师工号对应的记录
+        sql_query_leave_requests = f"SELECT stu_id, course_id, course_no, date FROM attendance_information WHERE status = 2 AND teacher_id = '{teacher_id}'"
+        leave_requests = attendance_manager.execute_sql_query(sql_query_leave_requests)
+
+        # 存储学生请假信息
+        leave_requests_info = []
+
+        # 对每个请假记录，查询学生姓名
+        for leave_request_item in leave_requests:
+            leave_request_detail = {
+                "student_id": leave_request_item[0],
+                "course_id": leave_request_item[1],
+                "course_no": leave_request_item[2],
+                "date": leave_request_item[3],
+            }
+
+            student_information = student_manager.search_student(leave_request_detail['student_id'])
+            leave_request_detail["student_name"] = student_information.stu_name
+
+            leave_requests_info.append(leave_request_detail)
+
+        # 返回学生请假信息
+        return jsonify({'leave_requests': leave_requests_info})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 if __name__ == "__main__":
     # 创建测试单元的Flask 应用程序
     app = Flask(__name__)
@@ -261,3 +305,22 @@ if __name__ == "__main__":
     #                               query_string=test_request_view_signal_teacher['args']):  # 使用 query_string 来传递查询参数
     #     response_view_signal_teacher = view_signal_teacher()
     #     print(response_view_signal_teacher)
+
+
+    #  5. 测试 get_leave_requests 函数
+    # print("\nTesting get_leave_requests:")
+    # # 提供一些测试参数
+    # test_teacher_id = 'T001'
+    #
+    # # 构造一个测试请求对象
+    # test_request_get_leave_requests = {
+    #     'headers': {'app': 'wx-app'},
+    #     'args': {'teacher_id': test_teacher_id}  # 使用 args
+    # }
+    # # 将 args 作为构造请求上下文的一部分
+    # with app.test_request_context(path='/', base_url='http://localhost',
+    #                               headers=test_request_get_leave_requests['headers'],
+    #                               query_string=test_request_get_leave_requests['args']):  # 使用 query_string 来传递查询参数
+    #     response_get_leave_requests = get_leave_requests()
+    #     # 在测试 get_leave_requests 函数后，打印响应内容
+    #     print(json.loads(response_get_leave_requests.get_data(as_text=True)))
