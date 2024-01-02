@@ -147,7 +147,7 @@ def post_attendance():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# 查看某个学生的信息
+# 查看某个老师的信息
 @teacher_routes.route('/teacher_manager/view_signal_teacher', methods=['GET'])
 def view_signal_teacher():
     teacher_manager = TeacherManager(table_name='teacher_information')
@@ -221,6 +221,37 @@ def get_leave_requests():
 
         # 返回学生请假信息
         return jsonify({'leave_requests': leave_requests_info})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# 查询老师所教的课程
+@teacher_routes.route('/teacher_manager/search_teacher_course', methods=['GET'])    # 请求创建请假数据
+def search_teacher_course():
+    # 创建CourseSelectionManager的实例
+    course_selection_manager = CourseSelectionManager(table_name='course')
+    # 验证请求头
+    if not validate_request_headers():
+        return jsonify({'error': 'Invalid application identification'}), 400
+
+    try:
+        # 获取参数请求
+        teacher_id = request.args.get('student_id')
+
+        # 查询数据库
+        sql_command = f"select distinct course_name from course_selection where teacher_id = '{teacher_id}'"
+        all_courses = course_selection_manager.execute_sql_query(sql_query=sql_command)
+
+        # 展开课程名称
+        courses_list = [
+            {
+                'course_name': course.course_name
+            }
+            for course in all_courses
+        ]
+
+        # 返回JSON格式的所选课程
+        return jsonify({'teacher_courses': courses_list}), 200
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -324,3 +355,21 @@ if __name__ == "__main__":
     #     response_get_leave_requests = get_leave_requests()
     #     # 在测试 get_leave_requests 函数后，打印响应内容
     #     print(json.loads(response_get_leave_requests.get_data(as_text=True)))
+
+
+    # 6. 测试 search_teacher_course 函数
+    # print("\nTesting search_teacher_course:")
+    # # 提供一些测试参数
+    # test_teacher_id = 'T001'
+    # # 构造一个测试请求对象
+    # test_request_search_teacher_course = {
+    #     'headers': {'app': 'wx-app'},
+    #     'args': {'student_id': test_teacher_id}  # 使用 args
+    # }
+    # # 将args作为构造请求上下文的一部分
+    # with app.test_request_context(path='/', base_url='http://localhost',
+    #                               headers=test_request_search_teacher_course['headers'],
+    #                               query_string=test_request_search_teacher_course['args']):  # 使用query_string来传递查询参数
+    #     response_search_teacher_course = search_teacher_course()
+    #     print(response_search_teacher_course)
+    #     print(response_search_teacher_course[0].json)  # 输出返回值的内容

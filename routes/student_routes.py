@@ -276,6 +276,83 @@ def punch_in():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# 学生发出请假请求
+@student_routes.route('/student_manager/absence_on_leave', methods=['POST'])    # 请求创建请假数据
+def absence_on_leave():
+    # 创建CourseSelectionManager的实例
+    course_selection_manager = CourseSelectionManager(table_name='course')
+    # 验证请求头
+    if not validate_request_headers():
+        return jsonify({'error': 'Invalid application identification'}), 400
+
+    try:
+        # 获取请求参数
+        student_id = request.form.get('student_id')
+        course_id = request.form.get('course_id')
+        teacher_id = request.form.get('teacher_id')
+        course_number = request.form.get("course_number")
+
+        # 判断课程号是否正确
+        sql_command = f"select * from course_selection where student_id = '{student_id}' and course_id = '{course_id}'"
+        course_id_decide = course_selection_manager.execute_sql_query(sql_query=sql_command)
+        if not course_id_decide:
+            return jsonify({'error': 'Course id is error'}), 410
+        # 判断读取的老师工号是否正确
+        sql_command = f"select * from course_selection where student_id = '{student_id}' and teacher_id = '{teacher_id}'"
+        teacher_id_decide = course_selection_manager.execute_sql_query(sql_query=sql_command)
+        if not teacher_id_decide:
+            return jsonify({'error': 'Teacher id is error'}), 411
+
+        # 判断读取的课次是否正确
+        course_number = int(course_number)
+        if course_number < 3 or course_number > 18:
+            return jsonify({'error': 'course number is error'}), 412
+
+        # 创建请假数据
+        attendance_record = AttendanceRecord(stu_id=student_id, course_id=course_id, course_no=course_number, teacher_id=teacher_id, date=None, status=2)
+        # 创建AttendanceManager的实例
+        attendance_manager = AttendanceManager(table_name='leave')
+        # 添加到数据库
+        test = attendance_manager.add_attendance_record(attendance_record=attendance_record)
+        if test == 0:
+            return jsonify({'error': 'record exists in the database'}), 420
+        else:
+            return jsonify({'successful': 'The leave request was successful'}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+# 查询学生所选的课程
+@student_routes.route('/student_manager/search_student_course', methods=['GET'])    # 请求创建请假数据
+def search_student_course():
+    # 创建CourseSelectionManager的实例
+    course_selection_manager = CourseSelectionManager(table_name='course')
+    # 验证请求头
+    if not validate_request_headers():
+        return jsonify({'error': 'Invalid application identification'}), 400
+
+    try:
+        # 获取参数请求
+        student_id = request.args.get('student_id')
+
+        # 查询数据库
+        sql_command = f"select distinct course_name from course_selection where student_id = '{student_id}'"
+        all_courses = course_selection_manager.execute_sql_query(sql_query=sql_command)
+
+        # 展开课程名称
+        courses_list = [
+            {
+                'course_name': course.course_name
+            }
+            for course in all_courses
+        ]
+
+        # 返回JSON格式的所选课程
+        return jsonify({'student_courses': courses_list}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == "__main__":
     # 创建测试单元的Flask 应用程序
@@ -360,3 +437,43 @@ if __name__ == "__main__":
     #                               query_string=test_request_punch_in['args']):  # 使用 query_string 来传递查询参数
     #     response_punch_in = punch_in()
     #     print(response_punch_in)
+
+    # 6. 测试 absence_on_leave 函数
+    # print("\nTesting absence_on_leave:")
+    # # 提供一些测试参数
+    # test_student_id_leave = '2021611001'
+    # test_course_id_leave = 'c1'
+    # test_teacher_id_leave = 'T001'
+    # test_course_number_leave = '10'
+    # # 构造一个测试请求对象
+    # test_request_absence_on_leave = {
+    #     'headers': {'app': 'wx-app'},
+    #     'args': {'student_id': test_student_id_leave,
+    #              'course_id': test_course_id_leave,
+    #              'teacher_id': test_teacher_id_leave,
+    #              'course_number': test_course_number_leave}  # 使用 args
+    # }
+    # # 将args 作为构造请求上下文的一部分
+    # with app.test_request_context(path='/', base_url='http://localhost',
+    #                               headers=test_request_absence_on_leave['headers'],
+    #                               query_string=test_request_absence_on_leave['args']):  # 使用 query_string 来传递查询参数
+    #     response_absence_on_leave = absence_on_leave()
+    #     print(response_absence_on_leave)
+
+
+    # 7. 测试 search_student_course 函数
+    # print("\nTesting search_student_course:")
+    # # 提供一些测试参数
+    # test_student_id = '2021611003'
+    # # 构造一个测试请求对象
+    # test_request_search_student_course = {
+    #     'headers': {'app': 'wx-app'},
+    #     'args': {'student_id': test_student_id}     # 使用 args
+    # }
+    # # 将args作为构造请求上下文的一部分
+    # with app.test_request_context(path='/', base_url='http://localhost',
+    #                               headers=test_request_search_student_course['headers'],
+    #                               query_string=test_request_search_student_course['args']):  # 使用query_string来传递查询参数
+    #     response_search_student_course = search_student_course()
+    #     print(response_search_student_course)
+    #     print(response_search_student_course[0].json)   # 输出返回值的内容
