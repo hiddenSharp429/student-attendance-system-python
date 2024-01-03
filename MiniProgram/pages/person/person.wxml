@@ -1,7 +1,7 @@
 <import src="../../templates/tabbar.wxml"/>
 <template is="tabBar" data="{{tabBar}}"/> 
 
-<view class="userinfo">
+<view>
 <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
         <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
           <image class="avatar" src="{{head}}"></image>
