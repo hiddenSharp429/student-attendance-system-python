@@ -3,14 +3,16 @@
 <view class="container">
   <view class="form-group">
     <view class="label-container">
-      <text>考勤标题：</text>
+      <text>选择考勤课程：</text>
     </view>
-    <input bindinput="inputTitle" placeholder="请输入考勤标题"></input>
+    <picker mode="date" value="{{date}}" start="2015-09-01" end="2030-09-01" bindchange="selectDate">
+      <view class="picker">当前选择：{{ date }}</view>
+    </picker>
   </view>
 
   <view class="form-group">
     <view class="label-container">
-      <text>考勤日期：</text>
+      <text>考勤周次：</text>
     </view>
     <picker mode="date" value="{{date}}" start="2015-09-01" end="2030-09-01" bindchange="selectDate">
       <view class="picker">当前选择：{{ date }}</view>
