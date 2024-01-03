@@ -16,7 +16,8 @@
                      "disablePlugins": [],
                      "outputPath": ""
               },
-              "condition": false
+              "condition": false,
+              "packNpmRelationList": []
        },
        "compileType": "miniprogram",
        "libVersion": "3.2.4",

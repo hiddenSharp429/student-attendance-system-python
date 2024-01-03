@@ -7,7 +7,6 @@ Page({
     isDisabled:true,  //表示页面加载完成时disabled为启用状态
     text:"修改信息",  //表示按钮初始文字为编辑
     inputFrame: "",
-    lista: ["./1.jpg"],
     i: 0,
 
     userInfo: {
@@ -21,20 +20,84 @@ Page({
    },
        onLoad:function(){
         app.editTabBar();    //显示自定义的底部导航
-        const who = app.globalData.who
+        // console.log(app.globalData.avatarUrl)
+        const head = app.globalData.avatarUrl
+        this.setData({
+          head: head
+        })
 
-        if( who === "学生"){
-          const student_name = app.globalData.name
-          const student_id = app.globalData.id
+
+        //定标签判断页面，分页显示个人信息
+        // const who = app.globalData.who
+
+        // if( who === "学生"){
+        //   const stu_name = app.globalData.name
+        //   const stu_id = app.globalData.id
+
+        // this.setData({
+        //     stu_name: stu_name,
+        //     stu_id: stu_id
+        // })
+        // }
+
+        // 获取数据库信息
+        var apiUrl = 'http://43.136.80.11:5000/student_manager/view_signal_student'
+        var that = this;
+
+        wx.request({
+          url: apiUrl,
+          method: 'GET',
+          header: {
+            'app': 'wx-app'
+          },
+          data: {
+            'student_id': app.globalData.id,
+            // 'student_id':'2021611001'  
+          },
+          success: function (res) {
+            if (res.statusCode === 200) {
+              // 接受参数
+              var result = res.data;
+              console.log(result)
+              if (result.student_information.stu_id === app.globalData.id) {
+              const stu_name = result.student_information.stu_name
+              const stu_id = result.student_information.stu_id
+              const major = result.student_information.major
+              const email = result.student_information.email
+              const phone = app.globalData.stu_phone_number
+
+              that.setData({
+                stu_name: stu_name,
+                stu_id: stu_id,
+                major: major,
+                email: email,
+                phone: phone
+              })
+
+              console.log(result)
+              
+              }
+              
+            } else {
+              // 捕捉状态报错
+        console.error('Error:', res.statusCode, res.data);
+            }
+          },
+          fail: function (error) {
+            // 捕捉请求报错
+            console.error('Request failed:', error);
+          }
+        }) 
+      },
+      onInput:function(e){
+        //修改电话
+        const phone = e.detail.value
+        app.globalData.stu_phone_number = phone
 
         this.setData({
-            student_name: student_name,
-            student_id: student_id
+          phone: phone
         })
-        }
-
-        
-      },
+    },
        changeState(e){
         if (!this.data.isDisabled) {   //当disabled=false时
             this.setData({  
@@ -52,27 +115,16 @@ Page({
           }
        },
 
-       image_click: function (e) {
-        wx.chooseImage({
-          count: 9,
-          sizeType: ['original', 'compressed'],
-          sourceType: ['album'],
-          success: (res) => {
-            var list = this.data.lista || []; // 获取已选择的图片列表
-            list.push(...res.tempFilePaths); // 将新选择的图片添加到列表中
-            this.setData({
-              lista: list,
-              i: this.data.i + 1 // 将i的值加一
-            });
-          }
-        });
-      },
       onChooseAvatar(e) {
-        const { avatarUrl } = e.detail
-        const { nickName } = this.data.userInfo
+        const { avatarUrl } = e.detail;
+        const { nickName } = this.data.userInfo;
+        app.globalData.avatarUrl = avatarUrl
+
         this.setData({
-          "userInfo.avatarUrl": avatarUrl,
+          head: app.globalData.avatarUrl,
           hasUserInfo: nickName && avatarUrl && avatarUrl !== defaultAvatarUrl,
+
         })
+
       }
 })

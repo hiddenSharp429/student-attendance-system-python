@@ -11,9 +11,15 @@ App({
     who:'',
     id:'',
     name:'',
+    tea_phone_number: '',
+    stu_phone_number:'',
+    avatarUrl: "",
 
   },
   onLaunch: function () {
+    this.globalData.tea_phone_number = '12345678901';
+    this.globalData.stu_phone_number = '12345678901';
+
     var that = this;
     wx.getSystemInfo({
       success: function (res) {
