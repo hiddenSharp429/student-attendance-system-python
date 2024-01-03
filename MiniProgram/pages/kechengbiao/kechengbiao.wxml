@@ -1,164 +1,71 @@
 <import src="../../templates/tabbar.wxml"/>
-<template is="tabBar" data="{{tabBar}}"/>  
-<view style="margin-top:50px; font-size: large; font-weight: 1000; text-align:center;">课程表</view>
+<template is="tabBar" data="{{tabBar}}"/> 
 
-
-<scroll-view class="table" scroll-x="true">
-    <!-- 表头(即第一行) -->
-    <view class="tr">
-        <view class="th_1">课程节次</view>
-        <view class="th_2">周一</view>
-        <view class="th_3">周二</view>
-        <view class="th_4">周三</view>
-        <view class="th_5">周四</view>
-        <view class="th_6">周五</view>
-        <view class="th_7">周六</view>
-        <view class="th_8">周日</view>
+<view class="courseContainer">
+  <!-- 导航区域 -->
+  <scroll-view class="navScroll" scroll-x enable-flex scroll-into-view="t{{nowWeek?nowWeek-3:(pageNum>3?pageNum-2:0)}}" scroll-with-animation>
+    <view class="navItem" wx:for="{{weekArray}}" wx:key="index" id="t{{index}}">
+      <view 
+        class="navContent {{todayWeek == index+1 || index == pageNum?'active': ''}}" 
+        bindtap="changeNav" 
+        data-page="{{index}}">
+        {{todayWeek == index+1?item+'(本周)':item}}
+      </view>
     </view>
+  </scroll-view>
 
-    <!-- 表格第二行 -->
-    <view class="tr">
-        <view class="td_1">1</view>
-        <view class="td_2">数学</view>
-        <view class="td_3">物理</view>
-        <view class="td_4">英语</view>
-        <view class="td_5"></view>
-        <view class="td_6">算法</view>
-        <view class="td_7"></view>
-        <view class="td_8"></view>
+<!-- 日期区域 -->
+<view class="date">
+    <view class="month">
+      <view>{{month}}</view>
+      <view>月</view>
     </view>
-
-    <!-- 表格第三行 -->
-    <view class="tr">
-        <view class="td_1">2</view>
-        <view class="td_2">数学</view>
-        <view class="td_3">物理</view>
-        <view class="td_4">英语</view>
-        <view class="td_5"></view>
-        <view class="td_6">算法</view>
-        <view class="td_7"></view>
-        <view class="td_8"></view>
+    <view class="day">
+      <view class="week {{todayMonth == monthNum && day == item?'todayDate':''}}" wx:for="{{nowDay}}" wx:key="index">
+        <view class="week-item">周{{week[index]}}</view>
+        <view class="day-item">
+  {{
+    nowDay[index].isMonthStart
+    ? nowDay[index].month + '月'
+    : nowDay[index].day + '日'
+  }}
+</view>
+      </view>
     </view>
+  </view>
+  <!-- 课表区域 -->
+  <scroll-view scroll-x="false" scroll-y scroll-top="{{scrollTop}}" class="courseScroll">
+    <view class="courseContent">
+      <view class="courseTime">
+        <view wx:for="{{13}}" wx:key="index" class="left">
+          <view class="number">{{item+1}}</view>
+          <view class="course-time">
+            <view class="time-start">{{course_time[index][0]}}</view>
+            <view class="time-end">{{course_time[index][1]}}</view>
+          </view>
+        </view>
+        <view>
+       
+        </view>
+      </view>
+      <view class="course">
+        <view wx:for="{{wList[nowWeek-1]}}" wx:key="index" class="kcb-item" style="margin-left:{{item.isToday!=7?(item.isToday)*100:0}}rpx;margin-top:{{(item.jie-1)*110+4}}rpx;height:{{item.classNumber*110 - 8}}rpx;">
+          <view class="smalltext" style="background-color:{{colorArrays[item.id-1]}}">
+            <view class="smalltextName">{{item.name}}</view>
+            <view class="smalltextAddress">{{item.address}}</view>
+          </view>
+        </view>
+      
+        <!-- <view wx:for="{{otherCourse}}" wx:key="index" class="otherCourse">
+          <view>{{item.name}}*{{item.teacher}}/{{item.time}}/{{item.address}}</view>
+        </view> -->
+      </view>
     
-    <!-- 表格第四行 -->
-    <view class="tr">
-        <view class="td_1">3</view>
-        <view class="td_2"></view>
-        <view class="td_3"></view>
-        <view class="td_4">线代</view>
-        <view class="td_5">思政</view>
-        <view class="td_6">英语</view>
-        <view class="td_7"></view>
-        <view class="td_8"></view>
     </view>
-
-     <!-- 表格第五行 -->
-     <view class="tr">
-        <view class="td_1">4</view>
-        <view class="td_2"></view>
-        <view class="td_3"></view>
-        <view class="td_4">线代</view>
-        <view class="td_5">思政</view>
-        <view class="td_6">英语</view>
-        <view class="td_7"></view>
-        <view class="td_8"></view>
-    </view>
-
-     <!-- 表格第六行 -->
-     <view class="tr">
-        <view class="td_1">5</view>
-        <view class="td_2"></view>
-        <view class="td_3"></view>
-        <view class="td_4"></view>
-        <view class="td_5"></view>
-        <view class="td_6"></view>
-        <view class="td_7"></view>
-        <view class="td_8"></view>
-    </view>
-
-     <!-- 表格第七行 -->
-     <view class="tr">
-        <view class="td_1">6</view>
-        <view class="td_2">体育</view>
-        <view class="td_3"></view>
-        <view class="td_4"></view>
-        <view class="td_5"></view>
-        <view class="td_6"></view>
-        <view class="td_7"></view>
-        <view class="td_8"></view>
-    </view>
-
-     <!-- 表格第八行 -->
-     <view class="tr">
-        <view class="td_1">7</view>
-        <view class="td_2">体育</view>
-        <view class="td_3"></view>
-        <view class="td_4"></view>
-        <view class="td_5"></view>
-        <view class="td_6"></view>
-        <view class="td_7"></view>
-        <view class="td_8"></view>
-    </view>
+   
   
-     <!-- 表格第九行 -->
-     <view class="tr">
-        <view class="td_1">8</view>
-        <view class="td_2"></view>
-        <view class="td_3">C语言</view>
-        <view class="td_4"></view>
-        <view class="td_5">数学</view>
-        <view class="td_6">算法</view>
-        <view class="td_7"></view>
-        <view class="td_8"></view>
-    </view>
-
-     <!-- 表格第十行 -->
-     <view class="tr">
-        <view class="td_1">9</view>
-        <view class="td_2"></view>
-        <view class="td_3">C语言</view>
-        <view class="td_4"></view>
-        <view class="td_5">数学</view>
-        <view class="td_6">算法</view>
-        <view class="td_7"></view>
-        <view class="td_8"></view>
-    </view>
-
-     <!-- 表格第十一行 -->
-     <view class="tr">
-        <view class="td_1">10</view>
-        <view class="td_2"></view>
-        <view class="td_3"></view>
-        <view class="td_4"></view>
-        <view class="td_5"></view>
-        <view class="td_6"></view>
-        <view class="td_7"></view>
-        <view class="td_8"></view>
-    </view>
-
-     <!-- 表格第十二行 -->
-     <view class="tr">
-        <view class="td_1">11</view>
-        <view class="td_2"></view>
-        <view class="td_3"></view>
-        <view class="td_4"></view>
-        <view class="td_5"></view>
-        <view class="td_6"></view>
-        <view class="td_7"></view>
-        <view class="td_8"></view>
-    </view>
-
-     <!-- 表格第十三行 -->
-     <view class="tr">
-        <view class="td_1">12</view>
-        <view class="td_2"></view>
-        <view class="td_3"></view>
-        <view class="td_4"></view>
-        <view class="td_5"></view>
-        <view class="td_6"></view>
-        <view class="td_7"></view>
-        <view class="td_8"></view>
-    </view>
-</scroll-view>
+  </scroll-view>
+ 
 
 
+</view>

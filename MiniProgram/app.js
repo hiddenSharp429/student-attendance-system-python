@@ -14,7 +14,9 @@ App({
     tea_phone_number: '',
     stu_phone_number:'',
     avatarUrl: "",
-
+    //课程表
+    selectedWeek: 1, // 默认选择第1周
+    selectedSemester: "2022-2023-1" // 默认选择2022-2023学年第1学期
   },
   onLaunch: function () {
     this.globalData.tea_phone_number = '12345678901';
