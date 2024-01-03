@@ -83,13 +83,11 @@ class PostAttendanceManager:
         session = Session()
 
         existing_post_attendance_record = session.query(PostAttendanceRecord).filter_by(
-            attendance_id=post_attendance_record.attendance_id,
+            code=post_attendance_record.code,
         ).first()
 
         if existing_post_attendance_record:
-            print(f"This existing post attendance record with attendance_id"
-                  f"{post_attendance_record.attendance_id} "
-                  f"already exists in the database.")
+            print(f"This post attendance record with code '{post_attendance_record.code}' already exists in the database.")
             return False
 
         else:

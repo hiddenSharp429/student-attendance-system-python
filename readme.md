@@ -198,5 +198,29 @@ AttendanceManager中有添加考勤记录的方法、查询某个考勤记录学
 ### 修复
 - 无
 
+## 版本 0.11.0 (2024.1.3)
+
+```angular2html
+@Author : zixian Zhu
+@Date   : 2024/1/3
+@Submit_branch: version_1
+```
+
+### 新特性
+
+- teacher_routes新增老师审核请假API，具体详情看线上文档。
+
+### 改进
+
+- 修改了学生考勤API接受的参数和其内部代码逻辑。
+- 修改了学生请假API接受的参数和其内部代码逻辑。
+- 修改post_attendance_information表的结构，使得每个code唯一。
+- 修改了attendance_information表的结构，新增一个reason列。
+- 修改了clss_schedule表的结构，每周每种课程只能上一次。
+
+### 修复
+- 修复了teacher_routes里面测试单元post_attendance单元的bug。
+- 修复了student_routse里面测试单元absence_on_leave单元的bug。
+- 修复了student_routse里面测试单元punch_in单元的bug。
 
 

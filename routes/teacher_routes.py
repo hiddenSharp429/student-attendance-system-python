@@ -7,6 +7,7 @@
 @Version: version_1
 @Last_editor Zixian Zhu
 """
+from datetime import timedelta, datetime
 
 from flask import jsonify, request, Flask, json
 from flask_cors import CORS
@@ -141,7 +142,8 @@ def post_attendance():
         if post_attendance_manager.post_attendance(post_attendance_record):
             # 返回缺勤学生名单
             return jsonify({'msg':'发布考勤成功'}), 200
-
+        else:
+            return jsonify({'msg':'签到码重复了'}), 429
 
 
     except Exception as e:
@@ -256,6 +258,41 @@ def search_teacher_course():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@teacher_routes.route('/teacher_manager/review_leave_request', methods=['POST'])
+def review_leave_request():
+    # 创建查询管理器实例
+    attendance_manager = AttendanceManager(table_name='attendance_information')
+
+    # 验证请求头部
+    if not validate_request_headers():
+        return jsonify({'error': 'Invalid application identification'}), 400
+
+    try:
+        # 获取请求参数：课程号和周次
+        student_id = request.form.get('student_id')
+        course_id = request.form.get('course_id')
+        course_no = request.form.get('course_no')
+        is_reviewed = request.form.get('is_reviewed')
+
+        # 初始化审核状态，若通过审核则为3，否则为0
+        status = 3 if is_reviewed == 'true' else 0
+
+        # 更新的sql语句
+        update_sql_statement = (
+            f"UPDATE attendance_information SET status = {status} "
+            f"WHERE stu_id = '{student_id}' AND course_id = '{course_id}' AND course_no = {course_no}"
+        )
+
+        # 执行更新操作
+        rows_affected = attendance_manager.execute_sql_query(update_sql_statement)
+
+        if rows_affected > 0:
+            return jsonify({'msg': 'Leave request reviewed successfully'}), 200
+        else:
+            return jsonify({'error': 'Failed to review leave request'}), 401
+
+    except Exception as e:
+        return jsonify({'error': str(e), 'status': 500}), 500
 
 if __name__ == "__main__":
     # 创建测试单元的Flask 应用程序
@@ -296,7 +333,7 @@ if __name__ == "__main__":
     #     response_view_absentee_list = view_absentee_list()
 
 
-    # 3. 测试 post_attendance 函数
+    #3. 测试 post_attendance 函数
     # print("\nTesting post_attendance:")
     #
     # one_day = timedelta(days=1)
@@ -311,13 +348,15 @@ if __name__ == "__main__":
     #
     # # 构造一个测试请求对象
     # test_post_attendance = {
-    #     'headers': {'app': 'wx-app'},
-    #     'args': {'course_name': test_course_name, 'course_id': test_course_id, 'course_no':test_course_no, 'attendance_start_time': test_attendance_start_time, 'attendance_end_time':test_attendance_end_time, 'code':test_code}  # 使用 args
+    #     'headers': {'app': 'wx-app', 'Content-Type': 'application/x-www-form-urlencoded'},
+    #     'data': {'course_name': test_course_name, 'course_id': test_course_id, 'course_no':test_course_no,
+    #              'attendance_start_time': test_attendance_start_time, 'attendance_end_time':test_attendance_end_time,
+    #              'code':test_code}  # 使用 data 来传递 form data
     # }
-    # # 将 args 作为构造请求上下文的一部分
+    # # 将 data 作为构造请求上下文的一部分
     # with app.test_request_context(path='/', base_url='http://localhost',
     #                               headers=test_post_attendance['headers'],
-    #                               query_string=test_post_attendance['args']):  # 使用 query_string 来传递查询参数
+    #                               data=test_post_attendance['data']): # 使用 data 来传递 form data
     #     response_post_attendance = post_attendance()
 
 
@@ -373,3 +412,25 @@ if __name__ == "__main__":
     #     response_search_teacher_course = search_teacher_course()
     #     print(response_search_teacher_course)
     #     print(response_search_teacher_course[0].json)  # 输出返回值的内容
+
+    # 7. 测试 review_leave_request 函数
+    # print("\nTesting review_leave_request:")
+    #
+    # # 提供一些测试参数
+    # test_student_id = '2021611011'
+    # test_course_id = 'c1'
+    # test_course_no = 14
+    # test_is_reviewed = 'false'  # Assuming is_reviewed should be a boolean value
+    #
+    # # 构造一个测试请求对象
+    # test_leave_request = {
+    #     'headers': {'app': 'wx-app', 'Content-Type': 'application/x-www-form-urlencoded'},
+    #     'data': {'student_id': test_student_id, 'course_id': test_course_id, 'course_no': test_course_no,
+    #              'is_reviewed': test_is_reviewed}  # 使用 data 来传递
+    # }
+    #
+    # # 将 form 作为构造请求上下文的一部分
+    # with app.test_request_context(path='/', base_url='http://localhost',
+    #                               headers=test_leave_request['headers'],
+    #                               data=test_leave_request['data']):  # 使用 data 来传递
+    #     response_review_leave_request = review_leave_request()
