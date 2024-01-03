@@ -1,10 +1,5 @@
-<import src="../../templates/tabbar.wxml"/>
-<template is="tabBar" data="{{tabBar}}"/> 
 <view class="context">
-     <text> 请输入签到码：</text> <input type="text"/>
-     <button bindtap="qiandao" >签到</button>
-</view>
-
-<view class="fighting">
-       <text>加油！</text>
+  <text>请输入签到码：</text>
+  <input type="text" value="{{qiandaocode}}" bindinput="updatecode"/>
+  <button bindtap="qiandao">签到</button>
 </view>

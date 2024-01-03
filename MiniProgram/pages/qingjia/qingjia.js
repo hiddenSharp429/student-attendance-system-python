@@ -6,15 +6,101 @@ Page({
         * 页面的初始数据
         */
        data: {
-
+              week: ['3', '4','5','6','7','8','9','10','11','12','13','14','15','16','17','18'],
+              weekIndex: 0,
+              stuId:'',
+              courseData: [], // 原始从服务器获取的课程数据
+              courseNames: [], // 存储课程名称的数组
+              selectedCourse: '', // 当前选中的课程名称
        },
-
+       weekchoose(e){
+              this.setData({
+                     weekIndex: e.detail.value
+              });   
+       },
+       classchoose(e) {
+              // 更新选中的课程名称
+              this.setData({
+                selectedCourse: this.data.courseNames[e.detail.value]
+              });
+            },
        /**
         * 生命周期函数--监听页面加载
         */
-       onLoad:function(){
-        app.editTabBar();    //显示自定义的底部导航
-      },
+onLoad: function () {
+  app.editTabBar(); // 显示自定义的底部导航
+  const that = this; // 在回调函数之外保存对页面this的引用
+  // 获得缓存的用户ID的课程
+  wx.getStorage({
+    key: 'stuId',
+    success: function (res) {
+      console.log(res.data);
+      that.setData({
+        stuId: res.data
+      });
+      console.log(that.data.stuId);
+      that.get_stu_class(that.data.stuId);
+    }
+  });
+  
+
+},
+//获得课程信息
+get_stu_class(stuId){
+       var that = this; // 保存当前页面的this引用
+       // 请求的接口地址
+       var apiUrl = 'http://43.136.80.11:5000/student_manager/view_student_courses';
+       console.log(stuId)
+       wx.request({
+           url: apiUrl,
+           method: 'GET',
+           header: {
+             'app': 'wx-app'
+           },
+           data:{
+              // 需要传入的参数
+
+             'student_id':stuId,
+             'semester': '2023',
+              'week_no': 5
+           },
+           success: function (res) {
+               if (res.statusCode === 200) {
+                   // 接受参数
+                   var result = res.data;
+              //      console.log(result.class_schedule_records)
+              that.setData({
+                     courseData: result.class_schedule_records,
+                   }, () => {
+                     that.fetchCourseData();
+                   });
+               } else {
+                   // 捕捉状态报错
+                   console.error('Error:', res.statusCode, res.data);
+               }
+           },
+           fail: function (error) {
+               // 捕捉请求报错
+               console.error('Request failed:', error);
+           }
+       });
+     },
+//将课程信息保存起来
+fetchCourseData: function() {
+       var that = this;
+       var names = that.data.courseData.map(function(course) {
+         return course.course_name;
+       });
+       // 去除重复的课程名称
+       var uniqueNames = [...new Set(names)];
+       that.setData({
+         courseNames: uniqueNames,
+         selectedCourse: uniqueNames[0] || '' // 设置默认值，如果数组为空则为空字符串
+         
+       });
+       console.log( that.data.courseNames)
+     },
+//将表格信息返回
 
        /**
         * 生命周期函数--监听页面初次渲染完成
@@ -27,7 +113,7 @@ Page({
         * 生命周期函数--监听页面显示
         */
        onShow() {
-
+              
        },
 
        /**

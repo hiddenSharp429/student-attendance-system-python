@@ -1,27 +1,17 @@
 {
-  "pages": [
+  "pages": ["pages/qiandao/qiandao",
+       "pages/qingjia/qingjia",
+       "pages/qjshenhe/qjshenhe",
+       
     "pages/login/index",
     "pages/kechengbiao/kechengbiao",
     "pages/kqtongji/kqtongji",
-    
-    "pages/qjshenhe/qjshenhe",
-    
-       "pages/qingjia/qingjia",
-       
- 
        "pages/index/index",
-      
-    
-      
-      
       "pages/fabukq/fabukq",
       "pages/logs/logs",
       "pages/list/list",  
-      "pages/qiandao/qiandao",
       "pages/person/person",
       "pages/stuperson/stuperson"
-     
-    
   ],
   "window": {
     "backgroundTextStyle": "light",

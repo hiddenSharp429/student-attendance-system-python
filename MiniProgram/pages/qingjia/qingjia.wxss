@@ -54,10 +54,13 @@
 .formLabel {
   display: inline-block;
   width: 230rpx;
-  text-align: right;
+  text-align: left;
   font-size: 30rpx;
-}
 
+}
+.formchoose{
+       display: inline-block; 
+       text-align: left;}
 .formLabel::before{
   content: '*';
   color: red;
