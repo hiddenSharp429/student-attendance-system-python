@@ -3,8 +3,8 @@
 @File   : attendence_information_table.py
 @Author : zixian Zhu(hiddensharp)
 @Date   : 2023/12/7
-@Desc   : 
-@Version:
+@Desc   : 考勤信息表
+@Version: version_1
 @Last_editor
 """
 
@@ -151,6 +151,6 @@ if __name__ == '__main__':
     # attendance_manager.search_attendance_record(2021611001, 'c1', 1)
     # print(attendance_record)
 
-    # sql_query = "SELECT * FROM attendance_information WHERE teacher_id = 'T001'"
-    # query_result = attendance_manager.execute_sql_query(sql_query)
-    # print(query_result)
+    sql_query = "SELECT * FROM attendance_information WHERE stu_id = '2021611001' AND course_id = 'c1' AND course_no = 2 AND status = 0"
+    query_result = attendance_manager.execute_sql_query(sql_query)
+    print(query_result)

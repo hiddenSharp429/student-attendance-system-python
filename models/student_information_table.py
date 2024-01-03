@@ -34,13 +34,9 @@ class Student(Base):
     dormitory = Column(String)
     phone = Column(String)
     email = Column(String)
-    absen_times = Column(Integer)
-    leave_times = Column(Integer)
-    truany_times = Column(Integer)
     password = Column(String)
 
-    def __init__(self, stu_id, stu_name, sex, age, institute, major, class_no, dormitory, phone, email, absen_times,
-                 leave_times, truany_times, password):
+    def __init__(self, stu_id, stu_name, sex, age, institute, major, class_no, dormitory, phone, email, password):
         '''
         需要传入的参数
         :param stu_id: 学生的jd
@@ -53,9 +49,6 @@ class Student(Base):
         :param dormitory:学生的宿舍号
         :param phone:学生的手机号
         :param email:学生的邮箱
-        :param absen_times:学生缺勤的次数
-        :param leave_times:学生请假的次数
-        :param truany_times:学生旷课的次数
         :param password:学生账号的密码
         '''
         self.stu_id = stu_id
@@ -68,16 +61,12 @@ class Student(Base):
         self.dormitory = dormitory
         self.phone = phone
         self.email = email
-        self.absen_times = absen_times
-        self.leave_times = leave_times
-        self.truany_times = truany_times
         self.password = password
 
     def __str__(self):
         return f"Student(stu_id={self.stu_id}, stu_name={self.stu_name}, sex={self.sex}, age={self.age}, " \
                f"institute={self.institute}, major={self.major}, class_no={self.class_no}, dormitory={self.dormitory}, " \
-               f"phone={self.phone}, email={self.email}, absen_times={self.absen_times}, " \
-               f"leave_times={self.leave_times}, truany_times={self.truany_times}, password={self.password})"
+               f"phone={self.phone}, email={self.email}, password={self.password}"
 
 
 class StudentManager:
@@ -147,8 +136,10 @@ class StudentManager:
         student = session.query(Student).filter_by(stu_id=student_id).first()
         if student:
             print(student)
+            return student
         else:
             print(f"Student with ID {student_id} not found in the database.")
+            return None
 
     def modify_student(self, student_id, new_data):
         '''
@@ -181,15 +172,15 @@ class StudentManager:
         return result.fetchall()
 
 if __name__ == '__main__':
-    student_manager = StudentManager(table_name='student')
+    student_manager = StudentManager(table_name='student_information')
 
-    student1 = Student(stu_id="2021611012", stu_name="李四", sex="男", age=20, institute="工学院",
-                       major="计算科学", class_no="1", dormitory="D501", phone="1234567890",
-                       email="1231@example.com", absen_times=3, leave_times=1, truany_times=2, password="123456")
+    # student1 = Student(stu_id="2021611012", stu_name="李四", sex="男", age=20, institute="工学院",
+    #                    major="计算科学", class_no="1", dormitory="D501", phone="1234567890",
+    #                    email="1231@example.com", password="123456")
 
     #student_manager.add_student(student1)
 
-    #student_manager.view_all_students()
+    student_manager.view_all_students()
 
     #student_manager.delete_student(student_id="21xxxx")
 

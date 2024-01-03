@@ -112,7 +112,6 @@ def view_student_courses():
             class_schedule_records.extend(schedule_records_with_name)
 
         if class_schedule_records:
-            # Now class_schedule_records contains the relevant class schedule records
             print(class_schedule_records)
             return jsonify({'class_schedule_records': class_schedule_records})
         else:
@@ -157,6 +156,43 @@ def verify_stu_login():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# 查看某个学生的信息
+@student_routes.route('/student_manager/view_signal_student', methods=['GET'])
+def view_signal_student():
+    # 创建studentManager的实例
+    student_manager = StudentManager(table_name='student_information')
+    # 验证请求头
+    if not validate_request_headers():
+        return jsonify({'error': 'Invalid application identification'}), 400
+
+    try:
+        # 获取请求参数
+        student_id = request.args.get('student_id')
+
+        # 使用StudentManger查看所有学生的信息
+        signal_student = student_manager.search_student(student_id)
+        # 获取没有密码的信息
+        info_without_password = {
+            "stu_id": signal_student.stu_id,
+            "stu_name": signal_student.stu_name,
+            "sex": signal_student.sex,
+            "age": signal_student.age,
+            "institute": signal_student.institute,
+            "major": signal_student.major,
+            "class_no": signal_student.class_no,
+            "dormitory": signal_student.dormitory,
+            "phone": signal_student.phone,
+            "email": signal_student.email,
+        }
+
+        # 返回JSON格式的学生信息
+        return jsonify({'student_information': info_without_password})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
 
 if __name__ == "__main__":
     # 创建测试单元的Flask 应用程序
@@ -189,18 +225,34 @@ if __name__ == "__main__":
     #     print(response_student_courses)
 
     # 3. 测试 verify_stu_login 函数
-    print("\nTesting verify_stu_login:")
-    # 提供一些测试参数
-    test_student_id_login = '2021611001'
-    test_student_name_login = '代青草'
-    # 构造一个测试请求对象
-    test_request_verify_login = {
-        'headers': {'app': 'wx-app'},
-        'args': {'student_id': test_student_id_login, 'student_name': test_student_name_login}  # 使用 args
-    }
-    # 将 args 作为构造请求上下文的一部分
-    with app.test_request_context(path='/', base_url='http://localhost',
-                                  headers=test_request_verify_login['headers'],
-                                  query_string=test_request_verify_login['args']):  # 使用 query_string 来传递查询参数
-        response_verify_login = verify_stu_login()
-        print(response_verify_login)
+    # print("\nTesting verify_stu_login:")
+    # # 提供一些测试参数
+    # test_student_id_login = '2021611001'
+    # test_student_name_login = '代青草'
+    # # 构造一个测试请求对象
+    # test_request_verify_login = {
+    #     'headers': {'app': 'wx-app'},
+    #     'args': {'student_id': test_student_id_login, 'student_name': test_student_name_login}  # 使用 args
+    # }
+    # # 将 args 作为构造请求上下文的一部分
+    # with app.test_request_context(path='/', base_url='http://localhost',
+    #                               headers=test_request_verify_login['headers'],
+    #                               query_string=test_request_verify_login['args']):  # 使用 query_string 来传递查询参数
+    #     response_verify_login = verify_stu_login()
+    #     print(response_verify_login)
+
+    # 4. 测试 view_signal_student 函数
+    # print("\nTesting view_signal_student:")
+    # # 提供一些测试参数
+    # test_student_id = '2021611001'
+    # # 构造一个测试请求对象
+    # test_request_view_signal_student = {
+    #     'headers': {'app': 'wx-app'},
+    #     'args': {'student_id': test_student_id}  # 使用 args
+    # }
+    # # 将 args 作为构造请求上下文的一部分
+    # with app.test_request_context(path='/', base_url='http://localhost',
+    #                               headers=test_request_view_signal_student['headers'],
+    #                               query_string=test_request_view_signal_student['args']):  # 使用 query_string 来传递查询参数
+    #     response_view_signal_student = view_signal_student()
+    #     print(response_view_signal_student)
