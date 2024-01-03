@@ -7,14 +7,20 @@
 @Version: version_1
 @Last_editor jin Yang
 """
+import time
 
 from flask import jsonify, request, Flask
 from flask_cors import CORS
 
+from models.attendence_information_table import AttendanceManager, AttendanceRecord
 from models.class_schedule_table import ClassScheduleManager
 from models.course_selection_table import CourseSelectionManager
+from models.course_table import CourseManager
+from models.post_attendance_table import PostAttendanceManager
 from routes import student_routes
 from models.student_information_table import StudentManager
+
+from datetime import datetime
 
 CORS(student_routes)
 
@@ -125,7 +131,7 @@ def view_student_courses():
 @student_routes.route('/student_manager/verify_stu_login', methods=['GET'])
 def verify_stu_login():
     # 创建studentManager的实例
-    student_manager = StudentManager(table_name='student')
+    student_manager = StudentManager(table_name='student_information')
     # 验证请求头
     if not validate_request_headers():
         return jsonify({'error': 'Invalid application identification'}), 400
@@ -191,8 +197,162 @@ def view_signal_student():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# 学生打卡签到
+@student_routes.route('/student_manager/punch_in', methods=['GET'])
+def punch_in():
+    # 创建CourseManager、PostAttendanceManager、AttendanceManager的实例
+    course_manager = CourseManager(table_name='course')
+    post_attendance_manager = PostAttendanceManager(table_name='post_attendance')
+    attendance_information_manager = AttendanceManager(table_name='attendance_information')
+
+    # 验证请求头
+    if not validate_request_headers():
+        return jsonify({'error': 'Invalid application identification'}), 400
+
+    try:
+        # 获取请求参数 : 学生ID、课程ID、课程周次、打卡时间、签到码
+        student_id = request.args.get('student_id')
+        course_id = request.args.get('course_id')
+        course_no = request.args.get('course_no')
+        punch_in_time = request.args.get('punch_in_time')
+        code = request.args.get('code')
+
+        # 根据课程ID、课程周次搜索，获取可能的考勤任务记录
+        post_attendance_list = post_attendance_manager.execute_sql_query(f"select * from post_attendance_information"
+                                                f" where course_id='{course_id}'and course_no='{course_no}'")
+
+        work = []  # 用来存储记录（默认最多只能找到一条记录）
+        # 根据code获取具体的发布考勤记录
+        for record in post_attendance_list:
+            if code == record[6]: work = record
+
+        # 判断该考勤任务是否存在
+        if work == []:
+            return jsonify({'msg': 'The attendance task does not exist or the check-in code is wrong'}), 404
+
+        # 获取 post_attendance_information 内的考勤时间 %Y-%m-%d %H:%M:%S
+        start_time = work[4]
+        end_time = work[5]
+
+        # 获取存入 attendance_information 表的时间  %H:%M:%S
+        start_time_str = datetime.strftime(start_time, "%Y-%m-%d %H:%M:%S")
+        _, signin_time = start_time_str.split(' ')
+
+        end_time_str = datetime.strftime(end_time, "%Y-%m-%d %H:%M:%S")
+        _, signout_time = end_time_str.split(' ')
+
+        # 获取data日期
+        data, _ = punch_in_time.split(' ')
+
+        # 获取老师id
+        teacher_id = course_manager.execute_sql_query(f"select teacher_id from course where course_id='{course_id}'")
+        status = '1' # 记录考勤状态
+
+        # 封装数据
+        attendance_record = AttendanceRecord(
+            student_id,
+            course_id,
+            course_no,
+            teacher_id[0][0],
+            data,
+            status,
+            signin_time,
+            signout_time
+        )
+
+        # 判断打卡签到时间是否在考勤时间区域内
+        if time.strptime(start_time_str,"%Y-%m-%d %H:%M:%S")>time.strptime(punch_in_time,"%Y-%m-%d %H:%M:%S") \
+                or time.strptime(end_time_str,"%Y-%m-%d %H:%M:%S")< time.strptime(punch_in_time,"%Y-%m-%d %H:%M:%S"):
+            # 添加缺勤记录
+            attendance_record.status = '0'
+            attendance_information_manager.add_attendance_record(attendance_record)
+
+            return jsonify({'msg': 'This attendance assignment has been terminated'}), 201
+
+        # 添加考勤成功记录
+        attendance_information_manager.add_attendance_record(attendance_record)
+        return jsonify({'msg': 'The time check is successful'}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# 学生发出请假请求
+@student_routes.route('/student_manager/absence_on_leave', methods=['POST'])    # 请求创建请假数据
+def absence_on_leave():
+    # 创建CourseSelectionManager的实例
+    course_selection_manager = CourseSelectionManager(table_name='course')
+    # 验证请求头
+    if not validate_request_headers():
+        return jsonify({'error': 'Invalid application identification'}), 400
+
+    try:
+        # 获取请求参数
+        student_id = request.form.get('student_id')
+        course_id = request.form.get('course_id')
+        teacher_id = request.form.get('teacher_id')
+        course_number = request.form.get("course_number")
+
+        # 判断课程号是否正确
+        sql_command = f"select * from course_selection where student_id = '{student_id}' and course_id = '{course_id}'"
+        course_id_decide = course_selection_manager.execute_sql_query(sql_query=sql_command)
+        if not course_id_decide:
+            return jsonify({'error': 'Course id is error'}), 410
+        # 判断读取的老师工号是否正确
+        sql_command = f"select * from course_selection where student_id = '{student_id}' and teacher_id = '{teacher_id}'"
+        teacher_id_decide = course_selection_manager.execute_sql_query(sql_query=sql_command)
+        if not teacher_id_decide:
+            return jsonify({'error': 'Teacher id is error'}), 411
+
+        # 判断读取的课次是否正确
+        course_number = int(course_number)
+        if course_number < 3 or course_number > 18:
+            return jsonify({'error': 'course number is error'}), 412
+
+        # 创建请假数据
+        attendance_record = AttendanceRecord(stu_id=student_id, course_id=course_id, course_no=course_number, teacher_id=teacher_id, date=None, status=2)
+        # 创建AttendanceManager的实例
+        attendance_manager = AttendanceManager(table_name='leave')
+        # 添加到数据库
+        test = attendance_manager.add_attendance_record(attendance_record=attendance_record)
+        if test == 0:
+            return jsonify({'error': 'record exists in the database'}), 420
+        else:
+            return jsonify({'successful': 'The leave request was successful'}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
+# 查询学生所选的课程
+@student_routes.route('/student_manager/search_student_course', methods=['GET'])    # 请求创建请假数据
+def search_student_course():
+    # 创建CourseSelectionManager的实例
+    course_selection_manager = CourseSelectionManager(table_name='course')
+    # 验证请求头
+    if not validate_request_headers():
+        return jsonify({'error': 'Invalid application identification'}), 400
+
+    try:
+        # 获取参数请求
+        student_id = request.args.get('student_id')
+
+        # 查询数据库
+        sql_command = f"select distinct course_name from course_selection where student_id = '{student_id}'"
+        all_courses = course_selection_manager.execute_sql_query(sql_query=sql_command)
+
+        # 展开课程名称
+        courses_list = [
+            {
+                'course_name': course.course_name
+            }
+            for course in all_courses
+        ]
+
+        # 返回JSON格式的所选课程
+        return jsonify({'student_courses': courses_list}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == "__main__":
     # 创建测试单元的Flask 应用程序
@@ -256,3 +416,64 @@ if __name__ == "__main__":
     #                               query_string=test_request_view_signal_student['args']):  # 使用 query_string 来传递查询参数
     #     response_view_signal_student = view_signal_student()
     #     print(response_view_signal_student)
+
+    # 5. 测试 punch_in 函数
+    # print("\nTesting punch_in:")
+    # # 测试参数
+    # test_student_id = '2021611012'
+    # test_course_id = 'c1'
+    # test_course_no = 16
+    # test_punch_in_time = '2024-01-01 09:20:34'
+    # test_code = 'c0003'
+    # # 构造一个测试请求对象
+    # test_request_punch_in = {
+    #     'headers': {'app': 'wx-app'},
+    #     'args': {'student_id': test_student_id, 'course_id': test_course_id, 'course_no': test_course_no,
+    #              'punch_in_time': test_punch_in_time, 'code': test_code}  # 使用 args
+    # }
+    # # 将 args 作为构造请求上下文的一部分
+    # with app.test_request_context(path='/', base_url='http://localhost',
+    #                               headers=test_request_punch_in['headers'],
+    #                               query_string=test_request_punch_in['args']):  # 使用 query_string 来传递查询参数
+    #     response_punch_in = punch_in()
+    #     print(response_punch_in)
+
+    # 6. 测试 absence_on_leave 函数
+    # print("\nTesting absence_on_leave:")
+    # # 提供一些测试参数
+    # test_student_id_leave = '2021611001'
+    # test_course_id_leave = 'c1'
+    # test_teacher_id_leave = 'T001'
+    # test_course_number_leave = '10'
+    # # 构造一个测试请求对象
+    # test_request_absence_on_leave = {
+    #     'headers': {'app': 'wx-app'},
+    #     'args': {'student_id': test_student_id_leave,
+    #              'course_id': test_course_id_leave,
+    #              'teacher_id': test_teacher_id_leave,
+    #              'course_number': test_course_number_leave}  # 使用 args
+    # }
+    # # 将args 作为构造请求上下文的一部分
+    # with app.test_request_context(path='/', base_url='http://localhost',
+    #                               headers=test_request_absence_on_leave['headers'],
+    #                               query_string=test_request_absence_on_leave['args']):  # 使用 query_string 来传递查询参数
+    #     response_absence_on_leave = absence_on_leave()
+    #     print(response_absence_on_leave)
+
+
+    # 7. 测试 search_student_course 函数
+    # print("\nTesting search_student_course:")
+    # # 提供一些测试参数
+    # test_student_id = '2021611003'
+    # # 构造一个测试请求对象
+    # test_request_search_student_course = {
+    #     'headers': {'app': 'wx-app'},
+    #     'args': {'student_id': test_student_id}     # 使用 args
+    # }
+    # # 将args作为构造请求上下文的一部分
+    # with app.test_request_context(path='/', base_url='http://localhost',
+    #                               headers=test_request_search_student_course['headers'],
+    #                               query_string=test_request_search_student_course['args']):  # 使用query_string来传递查询参数
+    #     response_search_student_course = search_student_course()
+    #     print(response_search_student_course)
+    #     print(response_search_student_course[0].json)   # 输出返回值的内容

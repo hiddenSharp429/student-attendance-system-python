@@ -135,7 +135,6 @@ class StudentManager:
         session = Session()
         student = session.query(Student).filter_by(stu_id=student_id).first()
         if student:
-            print(student)
             return student
         else:
             print(f"Student with ID {student_id} not found in the database.")

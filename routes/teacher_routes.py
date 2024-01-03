@@ -7,14 +7,14 @@
 @Version: version_1
 @Last_editor Zixian Zhu
 """
-from datetime import datetime, timedelta
 
-from flask import jsonify, request, Flask
+from flask import jsonify, request, Flask, json
 from flask_cors import CORS
 
 from models.attendence_information_table import AttendanceManager
 from models.course_selection_table import CourseSelectionManager
 from models.post_attendance_table import PostAttendanceManager, PostAttendanceRecord
+from models.student_information_table import StudentManager
 from routes import teacher_routes
 from models.teacher_information_table import TeacherManager
 
@@ -36,7 +36,8 @@ def validate_request_headers():
 @teacher_routes.route('/teacher_manager/verify_teacher_login', methods=['GET'])
 def verify_teacher_login():
     # 创建teacherManager的实例
-    teacher_manager = TeacherManager(table_name='teacher')
+    teacher_manager = TeacherManager(table_name='teacher_information')
+
     # 验证请求头
     if not validate_request_headers():
         return jsonify({'error': 'Invalid application identification'}), 400
@@ -146,7 +147,7 @@ def post_attendance():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# 查看某个学生的信息
+# 查看某个老师的信息
 @teacher_routes.route('/teacher_manager/view_signal_teacher', methods=['GET'])
 def view_signal_teacher():
     teacher_manager = TeacherManager(table_name='teacher_information')
@@ -181,6 +182,80 @@ def view_signal_teacher():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+# 老师获取学生请假审批信息
+@teacher_routes.route('/teacher_manager/get_leave_requests', methods=['GET'])
+def get_leave_requests():
+    # 创建AttendanceManager和TeacherManager实例
+    attendance_manager = AttendanceManager(table_name='attendance_information')
+    student_manager = StudentManager(table_name='student_information')
+
+    # 验证请求头
+    if not validate_request_headers():
+        return jsonify({'error': 'Invalid application identification'}), 400
+
+    try:
+        # 获取请求参数：老师工号
+        teacher_id = request.args.get('teacher_id')
+
+        # 查询状态为2且与老师工号对应的记录
+        sql_query_leave_requests = f"SELECT stu_id, course_id, course_no, date FROM attendance_information WHERE status = 2 AND teacher_id = '{teacher_id}'"
+        leave_requests = attendance_manager.execute_sql_query(sql_query_leave_requests)
+
+        # 存储学生请假信息
+        leave_requests_info = []
+
+        # 对每个请假记录，查询学生姓名
+        for leave_request_item in leave_requests:
+            leave_request_detail = {
+                "student_id": leave_request_item[0],
+                "course_id": leave_request_item[1],
+                "course_no": leave_request_item[2],
+                "date": leave_request_item[3],
+            }
+
+            student_information = student_manager.search_student(leave_request_detail['student_id'])
+            leave_request_detail["student_name"] = student_information.stu_name
+
+            leave_requests_info.append(leave_request_detail)
+
+        # 返回学生请假信息
+        return jsonify({'leave_requests': leave_requests_info})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# 查询老师所教的课程
+@teacher_routes.route('/teacher_manager/search_teacher_course', methods=['GET'])    # 请求创建请假数据
+def search_teacher_course():
+    # 创建CourseSelectionManager的实例
+    course_selection_manager = CourseSelectionManager(table_name='course')
+    # 验证请求头
+    if not validate_request_headers():
+        return jsonify({'error': 'Invalid application identification'}), 400
+
+    try:
+        # 获取参数请求
+        teacher_id = request.args.get('student_id')
+
+        # 查询数据库
+        sql_command = f"select distinct course_name from course_selection where teacher_id = '{teacher_id}'"
+        all_courses = course_selection_manager.execute_sql_query(sql_query=sql_command)
+
+        # 展开课程名称
+        courses_list = [
+            {
+                'course_name': course.course_name
+            }
+            for course in all_courses
+        ]
+
+        # 返回JSON格式的所选课程
+        return jsonify({'teacher_courses': courses_list}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 if __name__ == "__main__":
     # 创建测试单元的Flask 应用程序
@@ -261,3 +336,40 @@ if __name__ == "__main__":
     #                               query_string=test_request_view_signal_teacher['args']):  # 使用 query_string 来传递查询参数
     #     response_view_signal_teacher = view_signal_teacher()
     #     print(response_view_signal_teacher)
+
+
+    #  5. 测试 get_leave_requests 函数
+    # print("\nTesting get_leave_requests:")
+    # # 提供一些测试参数
+    # test_teacher_id = 'T001'
+    #
+    # # 构造一个测试请求对象
+    # test_request_get_leave_requests = {
+    #     'headers': {'app': 'wx-app'},
+    #     'args': {'teacher_id': test_teacher_id}  # 使用 args
+    # }
+    # # 将 args 作为构造请求上下文的一部分
+    # with app.test_request_context(path='/', base_url='http://localhost',
+    #                               headers=test_request_get_leave_requests['headers'],
+    #                               query_string=test_request_get_leave_requests['args']):  # 使用 query_string 来传递查询参数
+    #     response_get_leave_requests = get_leave_requests()
+    #     # 在测试 get_leave_requests 函数后，打印响应内容
+    #     print(json.loads(response_get_leave_requests.get_data(as_text=True)))
+
+
+    # 6. 测试 search_teacher_course 函数
+    # print("\nTesting search_teacher_course:")
+    # # 提供一些测试参数
+    # test_teacher_id = 'T001'
+    # # 构造一个测试请求对象
+    # test_request_search_teacher_course = {
+    #     'headers': {'app': 'wx-app'},
+    #     'args': {'student_id': test_teacher_id}  # 使用 args
+    # }
+    # # 将args作为构造请求上下文的一部分
+    # with app.test_request_context(path='/', base_url='http://localhost',
+    #                               headers=test_request_search_teacher_course['headers'],
+    #                               query_string=test_request_search_teacher_course['args']):  # 使用query_string来传递查询参数
+    #     response_search_teacher_course = search_teacher_course()
+    #     print(response_search_teacher_course)
+    #     print(response_search_teacher_course[0].json)  # 输出返回值的内容
