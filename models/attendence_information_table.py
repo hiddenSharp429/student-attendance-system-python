@@ -28,8 +28,9 @@ class AttendanceRecord(Base):
     status = Column(Integer)
     signin_time = Column(Time)
     signout_time = Column(Time)
+    reason = Column(String)
 
-    def __init__(self, stu_id, course_id, course_no, teacher_id, date, status, signin_time=None, signout_time=None):
+    def __init__(self, stu_id, course_id, course_no, teacher_id, date, status, signin_time=None, signout_time=None, reason=None):
         '''
         :param stu_id: 学生id
         :param course_id: 课程id
@@ -39,6 +40,7 @@ class AttendanceRecord(Base):
         :param status: 签到状态 (0 for absent, 1 for present)
         :param signin_time: 签到时间
         :param signout_time: 签退时间
+        :param reason: 请假原因
         '''
         self.stu_id = stu_id
         self.course_id = course_id
@@ -48,12 +50,13 @@ class AttendanceRecord(Base):
         self.status = status
         self.signin_time = signin_time
         self.signout_time = signout_time
+        self.reason = reason
 
     def __str__(self):
         return f"AttendanceRecord(stu_id={self.stu_id}, course_id={self.course_id}, " \
                f"course_no={self.course_no}, teacher_id={self.teacher_id}, " \
                f"date={self.date}, status={self.status}, " \
-               f"signin_time={self.signin_time}, signout_time={self.signout_time})"
+               f"signin_time={self.signin_time}, signout_time={self.signout_time}), reason={self.reason}"
 
 
 class AttendanceManager:
@@ -116,10 +119,12 @@ class AttendanceManager:
             course_id=course_id,
             course_no=course_no
         ).first()
-        if result.status == 1:
-            print(f'{result.stu_id}已签到，签到时间为{result.signin_time}')
-        else:
-            print(f"{result.stu_id}未签到")
+        # if result.status == 1:
+        #     print(f'{result.stu_id}已签到，签到时间为{result.signin_time}')
+        # else:
+        #     print(f"{result.stu_id}未签到")
+
+        return result
 
     def execute_sql_query(self, sql_query):
         '''
@@ -131,6 +136,15 @@ class AttendanceManager:
         session = Session()
 
         result = session.execute(text(sql_query))
+
+        # 检查语句是更新还是删除
+        if sql_query.strip().upper().startswith("UPDATE") or sql_query.strip().upper().startswith("DELETE"):
+            row_count = result.rowcount
+            print(f"{row_count} row(s) affected.")
+            session.commit()  # Commit the transaction
+            return row_count
+
+        # 对于其他类型的查询（SELECT、INSERT 等），返回获取的结果
         return result.fetchall()
 
 
@@ -138,9 +152,9 @@ if __name__ == '__main__':
     attendance_manager = AttendanceManager(table_name='attendance_information')
 
     # attendance_record = AttendanceRecord(
-    #     stu_id="2021611001",
+    #     stu_id="2021611011",
     #     course_id="c1",
-    #     course_no=2,
+    #     course_no=15,
     #     teacher_id="T001",
     #     date=datetime(2023, 1, 1),
     #     status=0
@@ -151,6 +165,9 @@ if __name__ == '__main__':
     # attendance_manager.search_attendance_record(2021611001, 'c1', 1)
     # print(attendance_record)
 
-    sql_query = "SELECT * FROM attendance_information WHERE stu_id = '2021611001' AND course_id = 'c1' AND course_no = 2 AND status = 0"
-    query_result = attendance_manager.execute_sql_query(sql_query)
-    print(query_result)
+    # sql_query = "SELECT * FROM attendance_information WHERE stu_id = '2021611001' AND course_id = 'c1' AND course_no = 2 AND status = 0"
+    # query_result = attendance_manager.execute_sql_query(sql_query)
+    # print(query_result)
+
+    # update_sql_query = "UPDATE attendance_information SET status = 2 , reason = '生病请假' WHERE stu_id = '2021611011' AND course_id = 'c1' AND course_no = 17"
+    # attendance_manager.execute_sql_query(update_sql_query)
