@@ -1,0 +1,29 @@
+.container {
+  padding: 50rpx;
+}
+
+.form-group {
+  margin-bottom: 20rpx;
+}
+
+.label-container {
+  display: flex; /* 使用flex布局 */
+  align-items: center; /* 垂直居中对齐 */
+  margin-bottom: 10rpx; /* 添加下方空隙 */
+}
+
+.label-container text {
+  margin-right: 10rpx; /* 添加右侧空隙 */
+  flex-shrink: 0; /* 禁止文字收缩，保持靠左对齐 */
+}
+
+button {
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  background-color: #007aff;
+  color: #fff;
+  font-size: 32rpx;
+  margin-top: 20rpx; /* 添加上方间距 */
+}

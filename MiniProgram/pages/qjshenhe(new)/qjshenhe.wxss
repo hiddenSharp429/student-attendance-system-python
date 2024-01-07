@@ -1,0 +1,58 @@
+.container {
+  padding: 20rpx;
+}
+
+.leave-application {
+  margin-bottom: 20rpx;
+}
+
+.leave-application-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.name {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-right: 20rpx;
+}
+
+.reason {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.divider {
+  height: 1rpx;
+  background-color: #ccc;
+  margin-bottom: 10rpx;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.approve-btn {
+  flex: 1;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  background-color: #4183ff;
+  color: #fff;
+  font-size: 35rpx;
+  margin-right: 10rpx;
+}
+
+.reject-btn {
+  flex: 1;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  background-color: #97a1b4;
+  color: #fff;
+  font-size: 35rpx;
+  margin-left: 10rpx;
+}
