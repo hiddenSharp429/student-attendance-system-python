@@ -1,0 +1,56 @@
+.container {
+  padding: 20rpx;
+}
+
+.leave-applications-header {
+       display: flex;
+       justify-content: space-between; /* 确保元素之间的间隔均匀分布 */
+       align-items: center; /* 垂直居中 */
+       padding: 10px;
+       background-color: #f2f2f2;
+       border-bottom: 1px solid #e1e1e1;
+     }
+     
+     .header-student-name,
+     .header-course-id,
+     .header-course-week {
+       justify-content: space-between; /* 确保元素之间的间隔均匀分布 */
+       flex-grow: 1; /* 每个元素平均分配空间 */
+       text-align: center; /* 文本居中对齐 */
+       font-size: 16px;
+       font-weight: bold;
+       color: #333;
+       padding: 0 10px; /* 根据需要添加内边距，确保文本不会紧贴边框 */
+     }
+.divider {
+  height: 1rpx;
+  background-color: #ccc;
+  margin-bottom: 10rpx;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.approve-btn {
+  flex: 1;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  background-color: #4183ff;
+  color: #fff;
+  font-size: 35rpx;
+  margin-right: 10rpx;
+}
+
+.reject-btn {
+  flex: 1;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  background-color: #97a1b4;
+  color: #fff;
+  font-size: 35rpx;
+  margin-left: 10rpx;
+}

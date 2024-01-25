@@ -1,0 +1,57 @@
+<import src="../../templates/tabbar.wxml"/>
+<template is="tabBar" data="{{tabBar}}"/>  
+<view class="container">
+  <view class="form-group">
+    <view class="label-container">
+      <text>课程名称：</text>
+    </view>
+    <input bindinput="inputCourseName" placeholder="请输入课程名称"></input>
+  </view>
+
+  <view class="form-group">
+    <view class="label-container">
+      <text>课程号：</text>
+    </view>
+    <input bindinput="inputCourseCode" placeholder="请输入课程号"></input>
+  </view>
+
+  <view class="form-group">
+    <view class="label-container">
+      <text>课程周次：</text>
+    </view>
+    <input bindinput="inputCourseWeek" placeholder="请输入课程周次"></input>
+  </view>
+
+  <view class="form-group">
+    <view class="label-container">
+      <text>签到码：</text>
+    </view>
+    <input bindinput="inputSignInCode" placeholder="请输入签到码"></input>
+  </view>
+
+  <view class="form-group">
+  <view class="label-container">
+    <text>考勤开始时间：</text>
+  </view>
+  <picker mode="date" value="{{date}}" start="1970-01-01" end="2100-12-31" bindchange="selectDate">
+    <view class="picker">点击选择日期：{{ date }}</view>
+  </picker>
+  <picker mode="time" value="{{startTime}}" start="00:00" end="23:59" bindchange="selectStartTime">
+    <view class="picker">点击选择时间：{{ startTime }}</view>
+  </picker>
+</view>
+
+<view class="form-group">
+  <view class="label-container">
+    <text>考勤结束时间：</text>
+  </view>
+  <picker mode="date" value="{{date}}" start="1970-01-01" end="2100-12-31" bindchange="selectDate">
+    <view class="picker">点击选择日期：{{ date }}</view>
+  </picker>
+  <picker mode="time" value="{{endTime}}" start="00:00" end="23:59" bindchange="selectEndTime">
+    <view class="picker">点击选择时间：{{ endTime }}</view>
+  </picker>
+</view>
+
+  <button bindtap="submitAttendance">发布</button>
+</view>

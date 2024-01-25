@@ -1,0 +1,43 @@
+<import src="../../templates/tabbar.wxml"/>
+<template is="tabBar" data="{{tabBar}}"/> 
+
+<view>
+<block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
+        <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+          <image class="avatar" src="{{head}}"></image>
+        </button>
+</block>
+</view>
+
+<view style="margin-top: 40px;" class="container">
+    <view>
+        <view>
+            <view class="text-center">
+                <text class="text-margin">学生姓名</text>
+                <input type="text" disabled="true" value="{{stu_name}}" placeholder="此处显示学生姓名" />
+            </view>
+            <view class="text-center" >
+                <text class="text-margin">学生学号</text>
+                <input type="text" disabled="true"  placeholder="此处显示学生学号" value="{{stu_id}}"/>
+            </view>
+            <view class="text-center" >
+                <text class="text-margin">所属专业</text>
+                <input type="text" disabled="true" value="{{major}}" placeholder="此处显示学生就读专业"/>
+            </view>
+            <view class="text-center" >
+                <text class="text-margin">电子邮箱</text>
+                <input type="text" disabled="true" value="{{email}}" placeholder="此处显示邮箱"/>
+            </view>
+            <view class="text-center" >
+                <text class="text-margin">联系电话</text>
+                <input type="text" disabled="{{isDisabled}}" style="{{inputFrame}}" value="{{phone}}" bindinput="onInput" placeholder="请输入联系电话"/>
+            </view>
+        </view>
+    </view>
+</view>
+
+<view style="margin-top: 20px;">
+    <button class="btn" bindtap="changeState">
+        {{text}}
+    </button>
+</view>

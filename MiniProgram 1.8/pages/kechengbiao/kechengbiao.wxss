@@ -1,0 +1,172 @@
+.navScroll {
+  display: flex;
+  white-space: nowrap;
+  height: 75rpx;
+  font-size: 25rpx;
+}
+.tabbar{
+       z-index: 1000;
+}
+/* .courseContainer{
+       height: 80%;
+} */
+.navScroll .navItem {
+  margin:20rpx 12rpx 0rpx;
+}
+.navScroll .navItem .navContent {
+  padding: 5rpx 25rpx;
+  line-height: 38rpx;
+}
+
+.active{
+  border-bottom: 1px solid red;
+  color: red;
+}
+
+.date{
+  display: flex;
+  height: 90rpx;
+  padding: 6rpx 0;
+  color: #3f3f3f;
+  line-height: 1.4;
+}
+
+.date .month{
+  width: 7%;
+  font-size: 24rpx;
+  display: inline-block;
+  color:#3f3f3f;
+  text-align: center;
+  height: 100%;
+  padding: 8rpx 0;
+}
+
+.date .day{
+  width: calc(100% - 8%);
+  margin: 0 auto;
+}
+.date .day .week{
+  width: calc(100% / 7);
+  display: inline-block;
+  height: 100%;
+  text-align: center;
+}
+.date .day .week-item{
+  font-size: 24rpx;
+  font-weight: 700;
+  line-height: 1.8;
+}
+.date .day .day-item{
+  font-size: 22rpx;
+  color: #333;
+}
+
+.date .day .todayDate{
+  background: #1380ff;
+  border-radius: 8rpx;
+  color: #fff;
+}
+
+.date .day .todayDate .day-item{
+  color: #fff;
+}
+
+.courseScroll{
+  width: 100%;
+  height: calc(100% - 119px); /* 减去底部导航栏的高度 */
+  position: fixed;
+  top: 69px;
+  z-index: 2;
+}
+
+.courseScroll .courseContent{
+  height: 1580rpx;
+  width: 100%;
+  display: flex;
+}
+
+.courseScroll .courseContent .courseTime{
+  width: 7%;
+  font-size: 24rpx;
+  display: inline-block;
+  color:#3f3f3f;
+  text-align: center;
+}
+
+.courseScroll .courseContent .courseTime .left {
+  width: 100%;
+  height: 110rpx;
+  justify-content: center;
+  display: flex;
+  position: relative;
+  align-items: center;
+  z-index: 0;
+  flex-direction: column;
+}
+
+.courseScroll .courseContent .courseTime .left .course-time{
+  height: 110rpx;
+  width: 100%;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  right: 0;
+}
+
+.courseScroll .courseContent .courseTime .left .course-time .time-start,
+.courseScroll .courseContent .courseTime .left .course-time .time-end{
+  color: #8799a3;
+  font-size: 20rpx;
+  position: absolute;
+  width: 100%;
+  left: 0;
+}
+
+.courseScroll .courseContent .courseTime .left .course-time .time-start{
+  top: 12rpx;
+}
+
+.courseScroll .courseContent .courseTime .left .course-time .time-end{
+  bottom: 12rpx;
+}
+
+.courseScroll .courseContent .courseTime .left .number{
+  font-size: 24rpx;
+  line-height: 110rpx;
+}
+
+.course{
+  width: 92%;
+  margin: 0 auto;
+}
+
+.course .kcb-item {
+  width: calc(92% / 7);
+  position: absolute;
+  justify-content: center;
+  display: flex;
+}
+
+.course .kcb-item .smalltext {
+  height: 100%;
+  width: 100%;
+  margin: 0 4rpx;
+  font-size: 24rpx;
+  line-height: 36rpx;
+  text-align: center;
+  color: #fff;
+  border-radius: 8rpx;
+  padding: 2rpx 4rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.course .kcb-item .smalltext .smalltextName{
+  flex: 1 0 auto;
+}
+
+.course .kcb-item .smalltext .smalltextAddress{
+  border-top:
+   1px solid #fff;
+  flex: 0 0 auto;
+}

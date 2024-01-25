@@ -1,0 +1,116 @@
+/* 子页面的头部 */
+.formHead {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100rpx;
+  background-color: rgb(84, 84, 180);
+}
+
+/* 子页面表单 */
+.formBody {
+  padding-left: 60rpx;
+  padding-right: 60rpx;
+  padding-top: 50rpx;
+}
+
+/* 向左箭头 */
+.backArrow {
+  height: 100rpx;
+  width: 100rpx;
+  position: absolute;
+  z-index: 2;
+}
+
+/* 向上箭头 */
+.upArrow {
+  height: 50rpx;
+  width: 50rpx;
+}
+
+/* 头部标题 */
+.headTitle {
+  font-size: 40rpx;
+  color: azure;
+  font-weight: 800;
+}
+
+/* 一个表单属性项包括Lable和input */
+.form-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 20rpx;
+}
+
+/* 表单的input */
+.formInput{
+  width: 100%;
+  border-bottom: 2rpx solid #ccc;
+}
+
+/* 表单的label */
+.formLabel {
+  display: inline-block;
+  width: 230rpx;
+  text-align: left;
+  font-size: 30rpx;
+
+}
+.formchoose{
+       display: inline-block; 
+       text-align: left;}
+.formLabel::before{
+  content: '*';
+  color: red;
+  font-size: 30rpx;
+}
+
+/* 表单的选择组 */
+.formSelect{
+  display: inline-block;
+  width: 100%;
+}
+
+/* 表单的选择子项 */
+.selectItem{
+  margin-left: 60rpx;
+  font-size: 30rpx;
+}
+
+.Picker{
+  position: absolute;
+  z-index: 2;
+}
+
+/* 表单中长文本的输入框 */
+textarea{
+  border: 2rpx solid #ccc;
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+  width: 100%;
+}
+
+
+.textareaTitle {
+  font-size: 30rpx;
+  font-weight: 600;
+  margin-bottom: 20rpx;
+}
+
+.textareaTitle::before{
+  content: '*';
+  color: red;
+  font-size: 30rpx;
+}
+
+/* 提交按钮的样式 */
+.handIt{
+  background-color: rgb(84, 84, 180);
+  color: whitesmoke;
+  border-radius: 30rpx;
+  height: 80rpx;
+  width: 500rpx !important;
+  font-size: 30rpx;
+}

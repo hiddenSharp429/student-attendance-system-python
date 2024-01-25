@@ -1,0 +1,9 @@
+<import src="../../templates/tabbar.wxml"/>
+<template is="tabBar" data="{{tabBar}}"/> 
+<image src='../img/true.jpg' style="display:block;width:{{width}}px;height:{{height*0.91}}px;"></image>
+<view class="context">
+  <text>请输入签到码：</text>
+  <input type="text" class="inputqiandao" value="{{qiandaocode}}" bindinput="updatecode"/>
+  <button class="qiandao" bindtap="qiandao">签到</button>
+</view>
+
