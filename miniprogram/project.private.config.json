@@ -1,0 +1,69 @@
+{
+       "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
+       "projectname": "%E8%BD%AF%E5%B7%A5%E4%BB%93%E5%BA%932",
+       "setting": {
+              "compileHotReLoad": true
+       },
+       "condition": {
+              "miniprogram": {
+                     "list": [
+                            {
+                                   "name": "pages/kechengbiao/kechengbiao",
+                                   "pathName": "pages/kechengbiao/kechengbiao",
+                                   "query": "",
+                                   "launchMode": "default",
+                                   "scene": null
+                            },
+                            {
+                                   "name": "pages/login/index",
+                                   "pathName": "pages/login/index",
+                                   "query": "",
+                                   "launchMode": "default",
+                                   "scene": null
+                            },
+                            {
+                                   "name": "pages/stuperson/stuperson",
+                                   "pathName": "pages/stuperson/stuperson",
+                                   "query": "",
+                                   "launchMode": "default",
+                                   "scene": null
+                            },
+                            {
+                                   "name": "pages/login/index",
+                                   "pathName": "pages/login/index",
+                                   "query": "",
+                                   "launchMode": "default",
+                                   "scene": null
+                            },
+                            {
+                                   "name": "pages/person/person",
+                                   "pathName": "pages/person/person",
+                                   "query": "",
+                                   "launchMode": "default",
+                                   "scene": null
+                            },
+                            {
+                                   "name": "请假条",
+                                   "pathName": "pages/qingjia/qingjia",
+                                   "query": "",
+                                   "launchMode": "default",
+                                   "scene": null
+                            },
+                            {
+                                   "name": "考勤统计",
+                                   "pathName": "pages/kqtongji/kqtongji",
+                                   "query": "",
+                                   "launchMode": "default",
+                                   "scene": null
+                            },
+                            {
+                                   "name": "请假审核",
+                                   "pathName": "pages/qjshenhe/qjshenhe",
+                                   "query": "",
+                                   "launchMode": "default",
+                                   "scene": null
+                            }
+                     ]
+              }
+       }
+}

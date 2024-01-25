@@ -1,0 +1,32 @@
+
+     /* 这里开始是tabbar的样式 */
+     .menu-item{  
+      width: 25%;  
+      float: left;  
+      text-align: center;  
+      padding-top: 8px;  
+    }  
+    .menu-item1{  
+      width: 25%;  
+      float: left;  
+      text-align: center;  
+      padding-top: 8px;  
+    }  
+    .img{
+      width: 23px;  
+      height: 23px;  
+      display: block;  
+      margin:auto;  
+    }  
+    .clear{  
+      clear: both;  
+    }  
+    .tab-bar{  
+      position: fixed;  
+      width: 100%;  
+      padding: 0px 2%;  
+    }  
+     
+    .button{
+      margin: 130px;
+    }
