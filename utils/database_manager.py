@@ -10,7 +10,7 @@
 from sqlalchemy import create_engine
 
 class DatabaseManager:
-    def __init__(self, table_name, db_user='ubuntu', db_password='i3^N9g&uz', db_host='43.136.80.11', db_port=3306, db_name='db', ):
+    def __init__(self, table_name, db_user='root', db_password='z20030429', db_host='localhost', db_port=3306, db_name='StudentAttendancnSystemDB', ):
         self.db_user = db_user
         self.db_password = db_password
         self.db_host = db_host

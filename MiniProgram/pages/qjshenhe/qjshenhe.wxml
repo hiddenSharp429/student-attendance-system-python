@@ -1,0 +1,25 @@
+<import src="../../templates/tabbar.wxml"/>
+<template is="tabBar" data="{{tabBar}}"/>
+<view class="container">
+  <!-- 表头 -->
+  <view class="leave-applications-header">
+    <text class="header-student-name">学生姓名</text>
+    <text class="header-course-id">课程编号</text>
+    <text class="header-course-week">周次</text>
+  </view>
+  <!-- 申请列表 -->
+  <view wx:for="{{ leaveApplications }}" wx:key="{{ index }}">
+ 
+      <view class="leave-applications-header">
+        <text class="header-student-name">{{ item.student_name }}</text> <!--学生号-->
+        <text class="header-course-id">{{ item.course_id }}</text> <!--课程号-->
+        <text class="header-course-week">{{ item.course_no }}</text> <!--周次-->
+      </view>
+      
+      <view class="divider"></view>
+      <view class="button-group">
+        <button class="approve-btn" catchtap="approveLeave" data-index="{{index}}">通过</button>
+        <button class="reject-btn" catchtap="rejectLeave" data-index="{{index}}">拒绝</button>
+      </view>
+  </view>
+</view>

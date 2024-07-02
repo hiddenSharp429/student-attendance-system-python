@@ -1,0 +1,52 @@
+<import src="../../templates/tabbar"/>
+<template is="tabBar" data="{{tabBar}}"/>
+<!-- 顶部导航栏 -->
+<view class="navbar">
+  <text class="navbar-title">考勤名单</text>
+</view>
+
+<!-- 选择课程周次和课程ID -->
+<view class="content">
+  <text>课程</text>
+  <picker bindchange="onCourseNoChange" value="{{selectedWeek}}" range="{{courseNos}}">
+    <view class="picker">
+      {{selectedWeek}}
+    </view>
+  </picker>
+  
+  <text>周次</text>
+  <picker bindchange="onCourseIdChange" value="{{selectedCourse}}" range="{{courseIds}}">
+    <view class="picker">
+      {{selectedCourse}}
+    </view>
+  </picker>
+</view>
+
+<!-- 单选框 -->
+<view class="danxuan">
+       <label class="radio-label">
+              <radio-group bindchange="onRadioChange">
+              <radio class="radio" value="1" checked="{{radioValue=='1'}}">缺勤名单</radio>
+               <radio class="radio" value="2" checked="{{radioValue=='2'}}">请假名单</radio>
+              </radio-group>
+     
+  <button bindtap="fetchAbsenceList">查询</button>
+</label>
+</view>
+
+<!-- 数据表格 -->
+<view class="table">
+  <!-- 缺勤学生列表 -->
+  <block wx:if="{{radioValue=='1'}}">
+    <view class="table-row" wx:for="{{absenceList}}" wx:key="unique">
+      <text class="table-cell">{{item}}</text>
+    </view>
+  </block>
+  
+  <!-- 请假学生列表 -->
+  <block wx:if="{{radioValue=='2'}}">
+    <view class="table-row" wx:for="{{qingjiaList}}" wx:key="unique">
+      <text class="table-cell">{{item}}</text>
+    </view>
+  </block>
+</view>
