@@ -8,10 +8,12 @@
 @Last_editor Zixian Zhu
 """
 from datetime import timedelta, datetime
+import sys
+import os
 
 from flask import jsonify, request, Flask, json
 from flask_cors import CORS
-
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from models.attendence_information_table import AttendanceManager
 from models.course_selection_table import CourseSelectionManager
 from models.post_attendance_table import PostAttendanceManager, PostAttendanceRecord

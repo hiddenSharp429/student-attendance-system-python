@@ -8,10 +8,12 @@
 @Last_editor jin Yang
 """
 import time
+import sys
+import os
 
 from flask import jsonify, request, Flask
 from flask_cors import CORS
-
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from models.attendence_information_table import AttendanceManager, AttendanceRecord
 from models.class_schedule_table import ClassScheduleManager
 from models.course_selection_table import CourseSelectionManager
@@ -147,6 +149,7 @@ def verify_stu_login():
         if not stu_name_tuple:
             return jsonify({'error': 'Student not found'}), 404
 
+        print(stu_name_tuple)
         # 从元组中提取学生姓名
         stu_name = stu_name_tuple[0][0]
         if not stu_name:
@@ -160,6 +163,8 @@ def verify_stu_login():
             return jsonify({'error': 'Student not found'}), 404
 
     except Exception as e:
+        # import traceback
+        # print("错误堆栈信息: ", traceback.format_exc())
         return jsonify({'error': str(e)}), 500
 
 
@@ -373,7 +378,7 @@ if __name__ == "__main__":
     # 创建测试单元的Flask 应用程序
     app = Flask(__name__)
 
-    # 1. 测试 view_all_students 函数
+    # # 1. 测试 view_all_students 函数
     # print("Testing view_all_students:")
     # # 构造一个测试请求对象
     # test_request = {'headers': {'app': 'wx-app'}}
@@ -453,28 +458,28 @@ if __name__ == "__main__":
     #     print(response_punch_in)
 
     # 6. 测试 absence_on_leave 函数
-    print("\nTesting absence_on_leave:")
-    # 提供一些测试参数
-    test_student_id_leave = '2021611011'
-    test_course_id_leave = 'c1'
-    test_teacher_id_leave = 'T001'
-    test_course_number_leave = 17
-    test_reason = '生病请假'
-    # 构造一个测试请求对象
-    test_request_absence_on_leave = {
-        'headers': {'app': 'wx-app', 'Content-Type': 'application/x-www-form-urlencoded'},
-        'data': {'student_id': test_student_id_leave,
-                 'course_id': test_course_id_leave,
-                 'teacher_id': test_teacher_id_leave,
-                 'course_number': test_course_number_leave,
-                 'reason': test_reason},  # 使用 data
-    }
-    # 将data 作为构造请求上下文的一部分
-    with app.test_request_context(path='/', base_url='http://localhost',
-                                  headers=test_request_absence_on_leave['headers'],
-                                  data=test_request_absence_on_leave['data']):  # 使用 data 来传递查询参数
-        response_absence_on_leave = absence_on_leave()
-        print(response_absence_on_leave)
+    # print("\nTesting absence_on_leave:")
+    # # 提供一些测试参数
+    # test_student_id_leave = '2021611011'
+    # test_course_id_leave = 'c1'
+    # test_teacher_id_leave = 'T001'
+    # test_course_number_leave = 17
+    # test_reason = '生病请假'
+    # # 构造一个测试请求对象
+    # test_request_absence_on_leave = {
+    #     'headers': {'app': 'wx-app', 'Content-Type': 'application/x-www-form-urlencoded'},
+    #     'data': {'student_id': test_student_id_leave,
+    #              'course_id': test_course_id_leave,
+    #              'teacher_id': test_teacher_id_leave,
+    #              'course_number': test_course_number_leave,
+    #              'reason': test_reason},  # 使用 data
+    # }
+    # # 将data 作为构造请求上下文的一部分
+    # with app.test_request_context(path='/', base_url='http://localhost',
+    #                               headers=test_request_absence_on_leave['headers'],
+    #                               data=test_request_absence_on_leave['data']):  # 使用 data 来传递查询参数
+    #     response_absence_on_leave = absence_on_leave()
+    #     print(response_absence_on_leave)
 
     # 7. 测试 search_student_course 函数
     # print("\nTesting search_student_course:")

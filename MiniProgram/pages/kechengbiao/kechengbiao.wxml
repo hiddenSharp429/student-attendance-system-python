@@ -1,0 +1,67 @@
+<import src="../../templates/tabbar.wxml"/>
+<template is="tabBar" class= "tabbar" data="{{tabBar}}"/> 
+
+<view class="courseContainer">
+  <!-- 导航区域 -->
+  <scroll-view class="navScroll" scroll-x enable-flex scroll-into-view="t{{nowWeek?nowWeek-3:(pageNum>3?pageNum-2:0)}}" scroll-with-animation>
+    <view class="navItem" wx:for="{{weekArray}}" wx:key="index" id="t{{index}}">
+      <view 
+        class="navContent {{todayWeek == index+1 || index == pageNum?'active': ''}}" 
+        bindtap="changeNav" 
+        data-page="{{index}}">
+        {{todayWeek == index+1?item+'(本周)':item}}
+      </view>
+    </view>
+  </scroll-view>
+
+<!-- 日期区域 -->
+<view class="date">
+    <view class="month">
+      <view>{{month}}</view>
+      <view>月</view>
+    </view>
+    <view class="day">
+      <view class="week {{todayMonth == monthNum && day == item?'todayDate':''}}" wx:for="{{nowDay}}" wx:key="index">
+        <view class="week-item">周{{week[index]}}</view>
+        <view class="day-item">
+  {{
+    nowDay[index].isMonthStart
+    ? nowDay[index].month + '月'
+    : nowDay[index].day + '日'
+  }}
+</view>
+      </view>
+    </view>
+  </view>
+  <!-- 课表区域 -->
+  <scroll-view scroll-x="false" scroll-y scroll-top="{{scrollTop}}" class="courseScroll">
+    <view class="courseContent">
+      <view class="courseTime">
+        <view wx:for="{{13}}" wx:key="index" class="left">
+          <view class="number">{{item+1}}</view>
+          <view class="course-time">
+            <view class="time-start">{{course_time[index][0]}}</view>
+            <view class="time-end">{{course_time[index][1]}}</view>
+          </view>
+        </view>
+        <view>
+       
+        </view>
+      </view>
+      <view class="course">
+        <view wx:for="{{wList[nowWeek-1]}}" wx:key="index" class="kcb-item" style="margin-left:{{item.isToday!=7?(item.isToday)*100:0}}rpx;margin-top:{{(item.jie-1)*110+4}}rpx;height:{{item.classNumber*110 - 8}}rpx;">
+          <view class="smalltext" style="background-color:{{colorArrays[item.id-1]}}">
+            <view class="smalltextName">{{item.name}}</view>
+            <view class="smalltextAddress">{{item.address}}</view>
+          </view>
+        </view>
+      </view>
+    
+    </view>
+   
+  
+  </scroll-view>
+ 
+
+
+</view>

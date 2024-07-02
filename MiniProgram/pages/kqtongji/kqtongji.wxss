@@ -1,0 +1,110 @@
+/* 样式文件可以根据实际需要进行调整 */
+.navbar {
+       background-color: #3498db; /* 蓝色背景 */
+       color: #fff;
+       text-align: center;
+       padding: 30rpx;
+     }
+     
+     .navbar-title {
+       font-size: 36rpx; /* 适当放大标题字体 */
+       font-weight: bold;
+     }
+     
+     .content {
+       padding: 40rpx;
+       display: flex;
+       align-items: center; /* 垂直居中对齐 */
+     }
+     
+     .content text {
+       font-size: 30rpx; /* 适当放大文本 */
+       color: #333; /* 深色文本 */
+       margin-right: 20rpx;
+     }
+     
+     .content picker {
+       flex-grow: 1; /* 让选择器扩展填充可用空间 */
+       border: 2rpx solid #3498db; /* 蓝色边框 */
+       border-radius: 10rpx; /* 圆角边框 */
+       padding: 20rpx;
+       margin-right: 20rpx;
+       background-color: #fff;
+     }
+     
+     .back-button {
+       position: absolute; /* 绝对定位 */
+       top: 20rpx; /* 一些顶部空间 */
+       left: 20rpx; /* 一些左边空间 */
+       padding: 20rpx;
+     }
+     
+     .back-icon {
+       font-size: 32rpx; /* 适当放大返回图标 */
+       color: #fff; /* 白色图标 */
+     }
+     
+     /* 查询按钮的样式 */
+     .button-container {
+       margin-top: 20rpx;
+       display: flex;
+       justify-content: center; /* 居中按钮 */
+     }
+     
+     .button-container button {
+       background-color: #3498db; /* 按钮蓝色背景 */
+       color: #fff;
+       padding: 20rpx 40rpx; /* 增加按钮内边距 */
+       border-radius: 10rpx; /* 圆角按钮 */
+       border: none; /* 去掉边框 */
+       font-size: 32rpx; /* 适当放大按钮文字 */
+       cursor: pointer;
+     }
+     
+     /* 数据表格样式 */
+     .table {
+       margin-top: 40rpx;
+       box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1); /* 添加阴影提升层次感 */
+     }
+     
+     .table-header {
+       background-color: #3498db; /* 表头蓝色背景 */
+       color: #fff; /* 表头文字白色 */
+     }
+     
+     .header-cell {
+       padding: 20rpx; /* 增加表头内边距 */
+       font-weight: bold;
+     }
+     
+     .table-row {
+       border-top: 2rpx solid #eee; /* 行与行之间的分隔线 */
+     }
+     
+     .table-cell {
+       text-align: center;
+       padding: 20rpx; /* 增加单元格内边距 */
+     }
+     
+     /* 单选框样式 */
+     .danxuan {
+       padding: 20rpx;
+     }
+     
+     .radio-label {
+       display: flex;
+       justify-content: space-around;
+     }
+     
+     .radio {
+       padding: 20rpx;
+       border: 2rpx solid #3498db; /* 蓝色边框 */
+       border-radius: 10rpx;
+       background-color: #fff;
+       color: #333;
+     }
+     
+     .radio:checked {
+       background-color: #3498db; /* 蓝色背景 */
+       color: #fff;
+     }

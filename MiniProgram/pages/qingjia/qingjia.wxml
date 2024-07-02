@@ -1,0 +1,40 @@
+<import src="../../templates/tabbar.wxml" />
+<template is="tabBar" data="{{tabBar}}" />
+<view class="container">
+       <!-- <image src="/image/backArrow.png" mode="" class="backArrow" bindtap="back"/> -->
+       <view class="formHead">
+              <text class="headTitle">请假条</text>
+       </view>
+       <view class="formBody">
+              <form bindsubmit="submitForm">
+                     <picker mode="selector" range="{{courseNames}}" bindchange="classchoose">
+                                   <text class="formLabel">请假课程：</text>
+                                   <input class="formchoose" type='text' value='{{selectedCourse}}' placeholder='请选择课程' disabled='true'></input>
+                     </picker>
+                     <picker mode="selector" range="{{week}}" range-key='' value='weekIndex' bindchange="weekchoose">
+                                   <text class="formLabel">请假周次：</text>
+                                   <input class="formchoose" type='text' value='{{week[weekIndex]}}' placeholder='请选择周次' disabled='true'></input>
+                     </picker>
+                     <view class="form-group">
+                            <text class="formLabel">联系方式：</text>
+                            <input type="text" name="contactInfo" class="formInput" placeholder="请输入联系方式" value="{{contactInfo}}" />
+                     </view>
+                     <view class="form-group">
+                            <text class="formLabel" style="width: 280rpx;">是否请病假</text>
+                            <radio-group name="STeam" class="formSelect">
+                                   <label class="selectItem">
+                                          <radio value="是" />是
+                                   </label>
+                                   <label class="selectItem">
+                                          <radio value="否" />否
+                                   </label>
+                            </radio-group>
+                     </view>
+                     <view class="">
+                            <text class="textareaTitle">请假理由：</text>
+                            <textarea name="expOverview" value="{{expOverview}}" maxlength="1000" bindinput="handleTextAreaInput" />
+                     </view>
+                     <button formType="submit" class="handIt" bindtap="submitForm">提交</button>
+              </form>
+       </view>
+</view>
